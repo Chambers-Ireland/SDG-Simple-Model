@@ -666,6 +666,7 @@
     .plan-sdg-icons .sdg-icon, .plan-sdg-icons .sdg-icon img { width: 42px; height: 42px; min-width: 42px; min-height: 42px; }
     .un-note { font-size: .72rem !important; line-height: 1.4; }
     .site-footer .un-note a { font-size: inherit; font-weight: 400; }
+    .site-footer > div { min-width: 0; }
     @media (max-width: 900px) and (min-width: 681px) {
       .overview { grid-template-columns: repeat(5, minmax(0, 1fr)); }
       .overview .org-field { grid-column: 1 / -1; }
@@ -735,6 +736,7 @@
         <select id="statusFilter">
           <option value="">All statuses</option>
           <option value="Not selected">Not selected</option>
+          <option value="Considering">Considering</option>
           <option value="To do">To do</option>
           <option value="In progress">In progress</option>
           <option value="Done">Done</option>
@@ -756,8 +758,8 @@
 
     <footer class="site-footer">
       <div>
-        <strong>Chambers Ireland SDG Action Planner</strong>
-        <p>The SDG numbers beside each suggestion show the Goals connected to that action. Your entries are saved automatically in this browser.</p>
+        <strong>Chambers Ireland Business Sustainability Action Planner</strong>
+        <p>The SDG icons alongside each action show which Goals it supports. Entries are saved in this browser; export a PDF to retain a separate copy.</p><p class="un-note">The content of this publication has not been approved by the United Nations and does not reflect the views of the United Nations or its officials or Member States. <a href="https://www.un.org/sustainabledevelopment/" target="_blank" rel="noopener">United Nations Sustainable Development Goals</a>.</p>
       </div>
       <a href="https://chambers.ie/wp-content/uploads/2022/11/Chambers-Ireland-SDG-Toolkit-for-Business-2021-2.pdf" target="_blank" rel="noopener">View the source toolkit (PDF)</a>
     </footer>
