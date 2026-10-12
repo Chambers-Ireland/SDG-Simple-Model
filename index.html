@@ -651,6 +651,13 @@
       .category-title { align-items: flex-start; flex-direction: column; }
     }
 
+    .council-history { padding: 22px 24px; margin-top: 22px; border-left: 7px solid var(--chambers-gold); }
+    .council-history-head { display: flex; gap: 26px; align-items: center; justify-content: space-between; }
+    .council-history-head h2 { color: var(--chambers-blue); font-size: 1.3rem; font-weight: 900; }
+    .council-history-head > p { max-width: 620px; color: var(--muted); font-size: .88rem; }
+    .council-history-logos { display: block; width: 100%; max-width: 960px; height: auto; margin: 18px auto 10px; object-fit: contain; }
+    .council-history-source { color: var(--muted); font-size: .76rem; }
+    @media (max-width: 680px) { .council-history-head { display: block; } .council-history-head > p { margin-top: 8px; } }
     /* Chambers Ireland Brand Guidelines V1.2: Lato, navy #0D3E76, gold #D8A20B. */
     .context-copy h1 { font-size: clamp(1.9rem, 3.3vw, 2.8rem); text-transform: none; line-height: 1.13; }
     .overview > div:nth-child(3) .stat-number { color: var(--purple); }
@@ -756,6 +763,17 @@
       <div id="planContent"></div>
     </section>
 
+    <section class="panel council-history" aria-labelledby="council-history-title">
+      <div class="council-history-head">
+        <div>
+          <p class="section-kicker">From the original Chambers Ireland toolkit</p>
+          <h2 id="council-history-title">Sustainable Business Council</h2>
+        </div>
+        <p>The 2021 SDG Toolkit featured these Council organisations. The logos are reproduced from that publication and reflect its historical membership, not a separate endorsement of this digital planner.</p>
+      </div>
+      <img class="council-history-logos" src="assets/sbc-members-2021.webp" alt="Historical 2021 Council organisations featured in the toolkit: John Sisk and Son, KPMG, IBM, Business in the Community Ireland, Bank of Ireland, ESB, Chambers Ireland, SSE, Abbott and AIB." loading="lazy">
+      <p class="council-history-source">Source: Chambers Ireland SDG Toolkit for Business (2021), pages 25-28. Current Council membership may differ.</p>
+    </section>
     <footer class="site-footer">
       <div>
         <strong>Chambers Ireland Business Sustainability Action Planner</strong>
