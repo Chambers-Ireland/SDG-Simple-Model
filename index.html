@@ -669,6 +669,36 @@
     .site-footer p { max-width: 780px; margin-top: 3px; color: #dfe9f4; font-size: 0.85rem; }
     .site-footer a { flex: 0 0 auto; color: white; font-size: 0.86rem; font-weight: 700; text-underline-offset: 3px; }
 
+    .privacy-banner {
+      position: fixed;
+      z-index: 1000;
+      left: 16px;
+      right: 16px;
+      bottom: 16px;
+      width: min(1050px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 16px 18px;
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 7px solid var(--chambers-gold);
+      box-shadow: 0 7px 36px rgba(13, 62, 118, 0.25);
+      color: var(--text);
+    }
+    .privacy-banner[hidden] { display: none; }
+    .privacy-banner p { margin-top: 4px; color: var(--muted); font-size: .86rem; line-height: 1.45; }
+    .privacy-banner strong { color: var(--chambers-blue); }
+    .privacy-banner a { color: var(--chambers-blue); font-weight: 900; text-underline-offset: 3px; }
+    .privacy-banner .btn { flex: 0 0 auto; min-width: 85px; }
+    .footer-links { display: flex; flex-direction: column; gap: 10px; }
+    @media (max-width: 680px) {
+      .privacy-banner { display: block; }
+      .privacy-banner .btn { display: block; width: 100%; margin-top: 12px; }
+    }
+
     .screen-reader-only {
       position: absolute;
       width: 1px;
@@ -870,9 +900,20 @@
         <strong>Chambers Ireland Business Sustainability Action Planner</strong>
         <p>The SDG icons alongside each action show which Goals it supports. Entries are saved in this browser; export a PDF to retain a separate copy.</p><p class="un-note">The content of this publication has not been approved by the United Nations and does not reflect the views of the United Nations or its officials or Member States. <a href="https://www.un.org/sustainabledevelopment/" target="_blank" rel="noopener">United Nations Sustainable Development Goals</a>.</p>
       </div>
-      <a href="https://chambers.ie/wp-content/uploads/2022/11/Chambers-Ireland-SDG-Toolkit-for-Business-2021-2.pdf" target="_blank" rel="noopener">View the source toolkit (PDF)</a>
+      <div class="footer-links">
+        <a href="https://chambers.ie/wp-content/uploads/2022/11/Chambers-Ireland-SDG-Toolkit-for-Business-2021-2.pdf" target="_blank" rel="noopener">View the source toolkit (PDF)</a>
+        <a href="/privacy.html">Privacy &amp; cookies</a>
+      </div>
     </footer>
   </main>
+
+  <aside class="privacy-banner" id="privacyBanner" aria-label="Privacy and browser storage notice" hidden>
+    <div>
+      <strong>Privacy &amp; browser storage</strong>
+      <p>This planner saves your selected actions and notes in your browser so you can return to them. We use cookie-free Vercel Analytics to measure website visits. We do not use advertising cookies or collect your action plan. <a href="/privacy.html">Privacy &amp; cookies</a></p>
+    </div>
+    <button type="button" class="btn btn-primary" id="dismissPrivacyBanner">Got it</button>
+  </aside>
 
   <!-- Cookieless Vercel Web Analytics, initialised before the tracking script. -->
   <script>
@@ -1248,6 +1289,19 @@
       document.getElementById('exportBtn').addEventListener('click', exportActionPlan);
       document.getElementById('clearSelectionsBtn').addEventListener('click', clearSelections);
     }
+
+    // Notice dismissal is separate from action-plan data and does not imply cookie consent.
+    const PRIVACY_NOTICE_KEY = 'sdg-privacy-notice-2026-10';
+    const privacyBanner = document.getElementById('privacyBanner');
+    try {
+      if (localStorage.getItem(PRIVACY_NOTICE_KEY) !== 'dismissed') privacyBanner.hidden = false;
+    } catch (error) {
+      privacyBanner.hidden = false;
+    }
+    document.getElementById('dismissPrivacyBanner').addEventListener('click', () => {
+      privacyBanner.hidden = true;
+      try { localStorage.setItem(PRIVACY_NOTICE_KEY, 'dismissed'); } catch (error) {}
+    });
 
     loadState();
     renderCategoryFilter();
