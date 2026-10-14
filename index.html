@@ -780,6 +780,180 @@
       .overview { grid-template-columns: repeat(5, minmax(0, 1fr)); }
       .overview .org-field { grid-column: 1 / -1; }
     }
+
+    /* Refined SME-first visual system, aligned to Chambers Ireland brand guidelines V1.2. */
+    :root {
+      --bg: #f5f7fa;
+      --surface-soft: #eef3f8;
+      --border: #dae2e9;
+      --shadow: 0 12px 32px rgba(13, 62, 118, .075);
+      --radius: 9px;
+    }
+    body { line-height: 1.55; -webkit-font-smoothing: antialiased; }
+    .container { width: min(1220px, calc(100% - 52px)); padding-top: 22px; padding-bottom: 68px; }
+    .header { min-height: 84px; margin-bottom: 20px; gap: 22px; }
+    .brand { width: 218px; height: 74px; }
+    .header-actions { gap: 9px; }
+    .btn {
+      min-height: 44px; display: inline-flex; align-items: center; justify-content: center;
+      padding: 11px 15px; border-radius: 6px; font-size: .86rem;
+      transition: background .16s ease, border-color .16s ease, box-shadow .16s ease;
+    }
+    .btn:hover:not(:disabled) { box-shadow: 0 4px 12px rgba(13, 62, 118, .09); }
+    .btn-primary { background: var(--chambers-blue); border-color: var(--chambers-blue); }
+    .btn-toolkit { background: #fffdf5; }
+    .contact-banner {
+      margin-bottom: 16px; padding: 11px 17px; border-left-width: 4px;
+      border-radius: 6px; background: #fff; font-size: .87rem;
+    }
+    .context-panel {
+      grid-template-columns: minmax(0, 1.5fr) minmax(320px, .85fr);
+      margin-bottom: 18px; border-left-width: 6px; border-radius: 9px;
+      box-shadow: var(--shadow);
+    }
+    .context-copy { padding: 35px 39px 34px; }
+    .eyebrow { font-size: .73rem; letter-spacing: .12em; }
+    .context-copy h1 {
+      margin-top: 13px; max-width: 700px;
+      font-size: clamp(2rem, 3.25vw, 3rem); line-height: 1.12;
+      letter-spacing: -.035em;
+    }
+    .context-lead {
+      margin-top: 18px; max-width: 640px;
+      font-size: 1.09rem; line-height: 1.52; font-weight: 700;
+    }
+    .context-copy h2.context-detail {
+      margin-top: 27px; padding-bottom: 7px;
+      font-size: .93rem; font-weight: 900; color: var(--chambers-blue);
+      letter-spacing: .01em;
+    }
+    .planner-intro-steps { gap: 15px; margin-top: 9px; }
+    .planner-intro-step { gap: 13px; }
+    .planner-intro-number {
+      flex-basis: 31px; height: 31px;
+      border: none; border-radius: 50%;
+      background: #e8eff6; color: var(--chambers-blue); font-size: .82rem;
+    }
+    .planner-intro-step p { font-size: .91rem; line-height: 1.57; }
+    .planner-intro-note { margin-top: 18px; font-size: .82rem; }
+    .context-aside {
+      padding: 32px 29px; justify-content: center; background: var(--chambers-blue);
+    }
+    .context-aside::after { width: 5px; background: var(--chambers-gold); }
+    .context-aside-label { font-size: .72rem; letter-spacing: .1em; }
+    .context-aside h2 { margin-top: 12px; font-size: 1.4rem; line-height: 1.25; }
+    .context-aside .resource-guide-intro { margin-top: 10px; font-size: .89rem; }
+    .resource-guide { margin-top: 19px; }
+    .resource-guide-item + .resource-guide-item { margin-top: 15px; padding-top: 15px; }
+    .resource-guide-item > a, .resource-guide-item > strong { font-size: .95rem; line-height: 1.5; }
+    .context-aside .resource-guide-item p { font-size: .86rem; line-height: 1.5; }
+    .panel { border-radius: var(--radius); box-shadow: 0 5px 18px rgba(13, 62, 118, .045); }
+    .overview {
+      grid-template-columns: minmax(215px, 1.5fr) repeat(5, minmax(88px, .7fr));
+      margin-bottom: 18px; border-top: 3px solid var(--chambers-gold);
+    }
+    .overview > div { padding: 21px 16px; min-height: 112px; }
+    .overview > div + div { border-left: 1px solid var(--border); }
+    .org-field { background: #f9fbfe !important; }
+    .org-field label, .filter label, .plan-field label {
+      font-size: .74rem; letter-spacing: .04em; margin-bottom: 8px;
+    }
+    .optional-label { color: var(--muted); text-transform: none; letter-spacing: 0; font-weight: 400; }
+    .org-field input, .filter input, .filter select, .plan-field input, .plan-field select, .plan-field textarea {
+      border-radius: 6px; min-height: 43px;
+    }
+    .stat-number { font-size: 1.9rem; font-variant-numeric: tabular-nums; }
+    .stat-label { font-size: .78rem; margin-top: 9px; line-height: 1.35; }
+    .toolbar {
+      grid-template-columns: minmax(220px, 1fr) minmax(145px, .58fr) minmax(136px, .52fr);
+      gap: 13px; padding: 21px; margin-bottom: 23px; border-top: 3px solid var(--chambers-blue);
+    }
+    .tabs {
+      grid-column: 1 / -1; width: 100%; justify-self: stretch;
+      padding: 5px; gap: 4px; border-radius: 7px;
+    }
+    .tab-btn { flex: 1; min-height: 43px; padding: 11px 14px; border-radius: 5px; font-size: .94rem; }
+    .tab-btn.active { background: var(--chambers-blue); color: white; box-shadow: 0 2px 7px rgba(13,62,118,.18); }
+    .tab-btn:focus-visible, .status-btn:focus-visible { outline: 3px solid var(--chambers-gold); outline-offset: 2px; }
+    .category-section { margin-bottom: 33px; }
+    .category-title {
+      min-height: 59px; margin-bottom: 14px; padding: 12px 18px;
+      border-radius: 6px; border-left-width: 6px; border-bottom: 1px solid var(--border);
+    }
+    .category-title h2 { text-transform: none; font-size: 1.13rem; letter-spacing: -.005em; }
+    .action-grid { grid-template-columns: repeat(auto-fill, minmax(min(360px, 100%), 1fr)); gap: 17px; }
+    .action-card {
+      display: flex; flex-direction: column; padding: 22px 21px 19px;
+      border-radius: 8px; box-shadow: 0 5px 16px rgba(13,62,118,.045);
+    }
+    .action-card::before { width: 4px; opacity: .75; border-radius: 8px 0 0 8px; }
+    .action-card.active { background: #fcfdff; }
+    .action-title { font-size: 1.035rem; line-height: 1.42; color: var(--chambers-blue-dark); }
+    .action-desc { font-size: .92rem; line-height: 1.5; }
+    .linked-goals { margin-top: 17px; }
+    .status-control {
+      margin-top: auto; transform: translateY(8px);
+      display: flex; flex-wrap: wrap; gap: 5px; padding: 6px; border-radius: 7px;
+    }
+    .status-btn {
+      flex: 1 1 calc(33.333% - 5px); min-width: 95px; min-height: 41px;
+      border-radius: 5px; padding: 8px 7px; font-size: .82rem; line-height: 1.24;
+    }
+    .status-btn.selected { box-shadow: inset 0 0 0 1px currentColor; }
+    .plan-intro { padding: 22px 24px; border-left-width: 6px; }
+    .plan-intro h2 { text-transform: none; font-size: 1.18rem; }
+    .plan-card { border-radius: 7px; padding: 21px; }
+    .site-footer { margin-top: 39px; border-top-width: 4px; border-radius: 7px; }
+    .privacy-banner { border-radius: 8px; }
+    @media (max-width: 1080px) {
+      .context-panel { grid-template-columns: 1fr; }
+      .context-aside { padding: 28px 33px; }
+      .resource-guide { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+      .resource-guide-item + .resource-guide-item { margin: 0; padding: 0 0 0 15px; border-top: 0; border-left: 1px solid rgba(255,255,255,.24); }
+      .overview { grid-template-columns: repeat(5, minmax(0,1fr)); }
+      .overview .org-field { grid-column: 1 / -1; }
+      .overview > div:nth-child(2) { border-left: 0; }
+      .overview > div:nth-child(n + 2) { border-top: 1px solid var(--border); }
+    }
+    @media (max-width: 760px) {
+      .container { width: min(100% - 28px, 1220px); padding-top: 14px; }
+      .header { flex-direction: column; align-items: stretch; gap: 12px; margin-bottom: 14px; }
+      .brand { width: 203px; height: 66px; }
+      .header-actions { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); }
+      .header-actions .btn-primary { grid-column: 1 / -1; grid-row: 1; }
+      .header-actions .btn { min-width: 0; white-space: normal; }
+      .contact-banner { padding: 11px 14px; }
+      .context-copy { padding: 26px 24px 30px; }
+      .context-copy h1 { font-size: clamp(1.94rem, 7.3vw, 2.55rem); }
+      .context-aside { padding: 27px 24px; }
+      .resource-guide { display: block; }
+      .resource-guide-item + .resource-guide-item { margin-top: 13px; padding: 13px 0 0; border-left: 0; border-top: 1px solid rgba(255,255,255,.24); }
+      .overview { grid-template-columns: repeat(2, minmax(0,1fr)); }
+      .overview .org-field { grid-column: 1 / -1; }
+      .overview > div:nth-child(n) { border-left: 0; border-top: 1px solid var(--border); }
+      .overview > div:nth-child(even) { border-right: 1px solid var(--border); }
+      .toolbar { grid-template-columns: repeat(2, minmax(0,1fr)); padding: 16px; }
+      .toolbar .filter:first-child { grid-column: 1 / -1; }
+      .toolbar .tabs { grid-column: 1 / -1; }
+      .action-grid { grid-template-columns: 1fr; }
+      .status-control { grid-template-columns: initial; }
+      .status-btn { flex-basis: calc(50% - 5px); }
+    }
+    @media (max-width: 420px) {
+      .container { width: calc(100% - 20px); }
+      .header-actions { grid-template-columns: 1fr; }
+      .header-actions .btn-primary { grid-column: auto; grid-row: auto; }
+      .context-copy { padding: 23px 20px 26px; }
+      .toolbar { grid-template-columns: 1fr; }
+      .toolbar .filter:first-child { grid-column: auto; }
+      .stat-number { font-size: 1.72rem; }
+      .action-card { padding: 18px 17px; }
+      .status-btn { min-width: 102px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .action-card, .btn { transition: none; }
+      .action-card:hover { transform: none; }
+    }
   </style>
 </head>
 <body>
@@ -808,7 +982,7 @@
         <p class="eyebrow">Chambers Ireland | Practical support for businesses</p>
         <h1 id="page-title">Business Sustainability Action Planner</h1>
         <p class="context-lead">Choose practical sustainability actions for your business and turn them into a plan you can follow.</p>
-        <p class="context-detail">How to use</p>
+        <h2 class="context-detail">How to use</h2>
         <div class="planner-intro-steps" aria-label="How to use the checklist and action plan">
           <div class="planner-intro-step">
             <span class="planner-intro-number" aria-hidden="true">1</span>
@@ -842,17 +1016,10 @@
       </aside>
     </section>
 
-    <section class="panel how-to" aria-labelledby="how-to-title">
-      <h2 class="screen-reader-only" id="how-to-title">How to use the planner</h2>
-      <div class="how-step"><div class="how-number">1</div><div><strong>Explore practical actions</strong><span>Browse ideas and recognise work you may already be doing.</span></div></div>
-      <div class="how-step"><div class="how-number">2</div><div><strong>Choose your next steps</strong><span>Keep ideas as Considering, or mark them To do, In progress or Done.</span></div></div>
-      <div class="how-step"><div class="how-number">3</div><div><strong>Build and share a plan</strong><span>Add an owner, target date and notes, then export a branded PDF.</span></div></div>
-    </section>
-
     <section class="panel overview" aria-label="Your checklist overview">
       <div class="org-field">
-        <label for="orgName">Start with your organisation</label>
-        <input id="orgName" type="text" autocomplete="organization" placeholder="Organisation or business name">
+        <label for="orgName">Your organisation <span class="optional-label">(optional)</span></label>
+        <input id="orgName" type="text" autocomplete="organization" placeholder="e.g. Your business name">
       </div>
       <div aria-live="polite"><div class="stat-number" id="statChosen">0</div><div class="stat-label">Actions in plan</div></div>
       <div aria-live="polite"><div class="stat-number" id="statConsidering">0</div><div class="stat-label">Considering</div></div>
