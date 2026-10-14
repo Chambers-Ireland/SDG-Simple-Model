@@ -237,6 +237,31 @@
       color: #dfe9f4;
       font-size: 0.9rem;
     }
+    /* Compact resource guide, styled within the Chambers Ireland navy/gold banner. */
+    .context-aside .resource-guide-intro { margin-top: 10px; font-size: 0.88rem; line-height: 1.46; }
+    .resource-guide { margin-top: 13px; }
+    .resource-guide-item + .resource-guide-item {
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid rgba(255, 255, 255, 0.25);
+    }
+    .resource-guide-item > a,
+    .resource-guide-item > strong {
+      display: inline-block;
+      color: #ffe08a;
+      font-size: 0.91rem;
+      font-weight: 900;
+      line-height: 1.28;
+      text-underline-offset: 3px;
+    }
+    .resource-guide-item > a:hover { color: white; }
+    .context-aside .resource-guide-item p {
+      margin-top: 4px;
+      font-size: 0.84rem;
+      line-height: 1.42;
+      color: #ecf3fa;
+    }
+    .context-aside .resource-guide-item p strong { color: white; font-weight: 900; }
 
     .panel {
       background: var(--surface);
@@ -700,10 +725,24 @@
         <p class="context-lead">Your business may already be making a difference. From looking after employees to reducing energy use, many everyday improvements also support sustainability.</p>
         <p class="context-detail">Start where you are. Recognise positive actions you have already taken, explore new ideas and choose what suits your business. Track progress, keep ideas for discussion and download a practical plan to share or review. Built around the UN Sustainable Development Goals, this free tool is designed to be manageable for SMEs.</p>
       </div>
-      <aside class="context-aside" aria-label="About this planner">
-        <p class="context-aside-label">Built from the toolkit</p>
-        <h2>Start small, build from there</h2>
-        <p>You do not need to take on all 17 Goals or start from scratch. Choose a few realistic actions relevant to your business and its resources.</p>
+      <aside class="context-aside" aria-labelledby="resource-guide-heading">
+        <p class="context-aside-label">Make the most of these resources</p>
+        <h2 id="resource-guide-heading">Which resource should I use?</h2>
+        <p class="resource-guide-intro">You can start using this planner straight away. The two guides offer extra help if you need it.</p>
+        <div class="resource-guide">
+          <div class="resource-guide-item">
+            <a href="https://chambers.ie/wp-content/uploads/2022/11/Chambers-Ireland-SDG-Toolkit-for-Business-2021-2.pdf" target="_blank" rel="noopener noreferrer">SDG Toolkit for Business (PDF)<span class="screen-reader-only"> (opens in a new tab)</span></a>
+            <p><strong>To understand and explore:</strong> Learn about the Goals and discover practical sustainability ideas for your business.</p>
+          </div>
+          <div class="resource-guide-item">
+            <a href="https://chambers.ie/wp-content/uploads/2023/10/SDG-Toolkit_Getting-Started-Workbook_300421.pdf" target="_blank" rel="noopener noreferrer">Getting Started Workbook (PDF)<span class="screen-reader-only"> (opens in a new tab)</span></a>
+            <p><strong>To decide where to begin:</strong> Involve colleagues, look at your starting point and identify priorities.</p>
+          </div>
+          <div class="resource-guide-item">
+            <strong>This online action planner</strong>
+            <p><strong>To put ideas into action:</strong> Select steps that suit your business, track progress and download your plan.</p>
+          </div>
+        </div>
       </aside>
     </section>
 
