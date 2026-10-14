@@ -193,6 +193,41 @@
       color: var(--muted);
       font-size: 0.96rem;
     }
+    /* Two clear steps explain the link between the checklist and action plan. */
+    .planner-intro-steps {
+      display: grid;
+      gap: 13px;
+      margin-top: 16px;
+    }
+    .planner-intro-step {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    .planner-intro-number {
+      display: inline-grid;
+      place-items: center;
+      flex: 0 0 26px;
+      height: 26px;
+      margin-top: 1px;
+      background: var(--chambers-blue);
+      border-left: 3px solid var(--chambers-gold);
+      color: white;
+      font-size: 0.79rem;
+      font-weight: 900;
+    }
+    .planner-intro-step p {
+      max-width: 740px;
+      color: var(--text);
+      font-size: 0.91rem;
+      line-height: 1.46;
+    }
+    .planner-intro-step strong { color: var(--chambers-blue); }
+    .planner-intro-note {
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: 0.82rem;
+    }
 
     .context-aside {
       position: relative;
@@ -722,8 +757,19 @@
       <div class="context-copy">
         <p class="eyebrow">Chambers Ireland | Practical support for businesses</p>
         <h1 id="page-title">Business Sustainability Action Planner</h1>
-        <p class="context-lead">Your business may already be making a difference. From looking after employees to reducing energy use, many everyday improvements also support sustainability.</p>
-        <p class="context-detail">Start where you are. Recognise positive actions you have already taken, explore new ideas and choose what suits your business. Track progress, keep ideas for discussion and download a practical plan to share or review. Built around the UN Sustainable Development Goals, this free tool is designed to be manageable for SMEs.</p>
+        <p class="context-lead">Choose practical sustainability actions for your business and turn them into a plan you can follow.</p>
+        <p class="context-detail">This planner has two simple sections:</p>
+        <div class="planner-intro-steps" aria-label="How to use the checklist and action plan">
+          <div class="planner-intro-step">
+            <span class="planner-intro-number" aria-hidden="true">1</span>
+            <p><strong>Toolkit checklist:</strong> Browse the ideas below. Mark actions as <em>Considering</em>, <em>To do</em>, <em>In progress</em> or <em>Done</em>. Anything left as <em>Not selected</em> stays out of your plan.</p>
+          </div>
+          <div class="planner-intro-step">
+            <span class="planner-intro-number" aria-hidden="true">2</span>
+            <p><strong>My action plan:</strong> Your selected actions appear here automatically. Add an owner, target date and notes, then download your plan as a PDF.</p>
+          </div>
+        </div>
+        <p class="planner-intro-note">Your progress is saved in this browser, so you can return and update it later.</p>
       </div>
       <aside class="context-aside" aria-labelledby="resource-guide-heading">
         <p class="context-aside-label">Make the most of these resources</p>
