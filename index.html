@@ -120,6 +120,22 @@
       flex-wrap: wrap;
     }
 
+    /* Discreet contact strip follows Chambers Ireland navy/gold guidelines. */
+    .contact-banner {
+      margin-bottom: 14px;
+      padding: 12px 18px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 6px solid var(--chambers-gold);
+      color: var(--text);
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+    .contact-banner strong,
+    .contact-banner a { color: var(--chambers-blue); font-weight: 900; }
+    .contact-banner a { text-underline-offset: 3px; }
+
+
     .btn {
       border: 1px solid var(--border);
       border-radius: 3px;
@@ -752,6 +768,10 @@
         <button class="btn btn-clear" type="button" id="clearSelectionsBtn" disabled>Clear selections</button>
       </div>
     </header>
+
+    <aside class="contact-banner" aria-label="Contact Chambers Ireland">
+      <p><strong>Want to get in touch?</strong> For commercial opportunities or information about Chambers Ireland's work nationally and through local Chambers, email <a href="mailto:info@chambers.ie">info@chambers.ie</a>.</p>
+    </aside>
 
     <section class="context-panel" aria-labelledby="page-title">
       <div class="context-copy">
