@@ -969,7 +969,7 @@
       <div class="header-actions">
         <a class="btn btn-toolkit" href="https://chambers.ie/wp-content/uploads/2022/11/Chambers-Ireland-SDG-Toolkit-for-Business-2021-2.pdf" target="_blank" rel="noopener">Read the full toolkit</a>
         <button class="btn btn-primary" type="button" id="exportBtn">Export PDF action plan</button>
-        <button class="btn btn-clear" type="button" id="clearSelectionsBtn" disabled>Clear selections</button>
+        <button class="btn btn-clear" type="button" id="clearSelectionsBtn" disabled>Clear plan</button>
       </div>
     </header>
 
@@ -1019,7 +1019,7 @@
     <section class="panel overview" aria-label="Your checklist overview">
       <div class="org-field">
         <label for="orgName">Your organisation <span class="optional-label">(optional)</span></label>
-        <input id="orgName" type="text" autocomplete="organization" placeholder="e.g. Your business name">
+        <input id="orgName" type="text" autocomplete="off" placeholder="e.g. Your business name">
       </div>
       <div aria-live="polite"><div class="stat-number" id="statChosen">0</div><div class="stat-label">Actions in plan</div></div>
       <div aria-live="polite"><div class="stat-number" id="statConsidering">0</div><div class="stat-label">Considering</div></div>
@@ -1179,10 +1179,21 @@
       return ACTIONS.filter(action => ACTIVE_STATUSES.includes(state.statuses[action.id]));
     }
 
+    function hasSavedPlanContent() {
+      return Boolean(
+        state.organisation.trim() ||
+        chosenActions().length ||
+        ACTIONS.some(action => {
+          const detail = state.details[action.id];
+          return detail.owner.trim() || detail.targetDate.trim() || detail.notes.trim();
+        })
+      );
+    }
+
     function renderStats() {
       const chosen = chosenActions();
       document.getElementById('statChosen').textContent = chosen.length;
-      document.getElementById('clearSelectionsBtn').disabled = chosen.length === 0;
+      document.getElementById('clearSelectionsBtn').disabled = !hasSavedPlanContent();
       document.getElementById('statConsidering').textContent = chosen.filter(action => state.statuses[action.id] === 'Considering').length;
       document.getElementById('statTodo').textContent = chosen.filter(action => state.statuses[action.id] === 'To do').length;
       document.getElementById('statProgress').textContent = chosen.filter(action => state.statuses[action.id] === 'In progress').length;
@@ -1349,15 +1360,15 @@
           <div class="plan-fields">
             <div class="plan-field">
               <label for="owner-${escapeHtml(action.id)}">Owner</label>
-              <input class="plan-detail" id="owner-${escapeHtml(action.id)}" data-id="${escapeHtml(action.id)}" data-field="owner" type="text" value="${escapeHtml(detail.owner)}" placeholder="Person or team responsible">
+              <input class="plan-detail" id="owner-${escapeHtml(action.id)}" data-id="${escapeHtml(action.id)}" data-field="owner" type="text" autocomplete="off" value="${escapeHtml(detail.owner)}" placeholder="Person or team responsible">
             </div>
             <div class="plan-field">
               <label for="date-${escapeHtml(action.id)}">Target date</label>
-              <input class="plan-detail" id="date-${escapeHtml(action.id)}" data-id="${escapeHtml(action.id)}" data-field="targetDate" type="date" value="${escapeHtml(detail.targetDate)}">
+              <input class="plan-detail" id="date-${escapeHtml(action.id)}" data-id="${escapeHtml(action.id)}" data-field="targetDate" type="date" autocomplete="off" value="${escapeHtml(detail.targetDate)}">
             </div>
             <div class="plan-field notes">
               <label for="notes-${escapeHtml(action.id)}">Notes or evidence</label>
-              <textarea class="plan-detail" id="notes-${escapeHtml(action.id)}" data-id="${escapeHtml(action.id)}" data-field="notes" placeholder="Next step, progress update, result or evidence collected">${escapeHtml(detail.notes)}</textarea>
+              <textarea class="plan-detail" id="notes-${escapeHtml(action.id)}" data-id="${escapeHtml(action.id)}" data-field="notes" autocomplete="off" placeholder="Next step, progress update, result or evidence collected">${escapeHtml(detail.notes)}</textarea>
             </div>
           </div>
         </article>
@@ -1371,28 +1382,37 @@
     }
 
     function clearSelections() {
-      const selectedCount = chosenActions().length;
-      if (selectedCount === 0) return;
-
+      if (!hasSavedPlanContent()) return;
       const confirmed = window.confirm(
-        'Set all actions back to Not selected?\n\n' +
-        'This will remove ' + selectedCount + ' selected action' + (selectedCount === 1 ? '' : 's') +
-        ' from My action plan. Your organisation name, saved owners, dates and notes will be kept.\n\n' +
-        'The status changes cannot be undone.'
+        'Clear this action plan and start again?\\n\\n' +
+        'This removes every selected action, the saved organisation name, and all owners, target dates and notes. ' +
+        'This data will be cleared from this browser and cannot be recovered from the planner.'
       );
       if (!confirmed) return;
 
+      state.organisation = '';
+      state.search = '';
+      state.category = '';
+      state.statusFilter = '';
       ACTIONS.forEach(action => {
         state.statuses[action.id] = 'Not selected';
+        state.details[action.id] = { owner: '', targetDate: '', notes: '' };
       });
-      // Show all actions again, even if the visitor had filtered by a previous status.
-      state.statusFilter = '';
+      document.getElementById('orgName').value = '';
+      document.getElementById('searchInput').value = '';
+      document.getElementById('categoryFilter').value = '';
       document.getElementById('statusFilter').value = '';
+      try {
+        localStorage.removeItem(LEGACY_STORAGE_KEY);
+      } catch (error) {
+        console.warn('Older checklist data could not be removed.', error);
+      }
+      // The privacy notice preference is separate and is not cleared.
       saveState();
       renderAll();
     }
 
-    function exportActionPlan() {
+        function exportActionPlan() {
       const selected = chosenActions();
       if (!selected.length) {
         alert('Choose at least one action as Considering, To do, In progress or Done before downloading your PDF.');
@@ -1426,6 +1446,7 @@
       document.getElementById('orgName').addEventListener('input', event => {
         state.organisation = event.target.value;
         saveState();
+        renderStats();
       });
 
       document.getElementById('searchInput').addEventListener('input', event => {
