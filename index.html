@@ -138,6 +138,9 @@
     .btn-primary:hover { background: var(--primary-dark); border-color: var(--primary-dark); color: white; }
     .btn-toolkit { border-color: var(--chambers-gold); color: var(--chambers-blue); }
     .btn-toolkit:hover { background: #fff8df; border-color: var(--chambers-gold-dark); }
+    .btn-clear { color: var(--chambers-blue); border-color: var(--border); background: var(--surface); }
+    .btn-clear:hover:not(:disabled) { color: var(--chambers-blue); border-color: var(--chambers-gold); background: #fff8df; }
+    .btn-clear:disabled { opacity: .48; cursor: not-allowed; }
 
     .context-panel {
       display: grid;
@@ -624,7 +627,7 @@
       .container { width: min(100% - 20px, 1280px); padding-top: 12px; }
       .header { align-items: stretch; flex-direction: column; gap: 4px; }
       .brand { width: 220px; height: 76px; }
-      .header-actions { display: grid; grid-template-columns: 1fr 1fr; }
+      .header-actions { display: grid; grid-template-columns: 1fr; }
       .header .btn { width: 100%; text-align: center; }
       .context-panel { border-left-width: 7px; }
       .context-copy { padding: 25px 22px 26px; }
@@ -686,6 +689,7 @@
       <div class="header-actions">
         <a class="btn btn-toolkit" href="https://chambers.ie/wp-content/uploads/2022/11/Chambers-Ireland-SDG-Toolkit-for-Business-2021-2.pdf" target="_blank" rel="noopener">Read the full toolkit</a>
         <button class="btn btn-primary" type="button" id="exportBtn">Export PDF action plan</button>
+        <button class="btn btn-clear" type="button" id="clearSelectionsBtn" disabled>Clear selections</button>
       </div>
     </header>
 
@@ -862,6 +866,7 @@
     function renderStats() {
       const chosen = chosenActions();
       document.getElementById('statChosen').textContent = chosen.length;
+      document.getElementById('clearSelectionsBtn').disabled = chosen.length === 0;
       document.getElementById('statConsidering').textContent = chosen.filter(action => state.statuses[action.id] === 'Considering').length;
       document.getElementById('statTodo').textContent = chosen.filter(action => state.statuses[action.id] === 'To do').length;
       document.getElementById('statProgress').textContent = chosen.filter(action => state.statuses[action.id] === 'In progress').length;
@@ -1049,6 +1054,28 @@
       renderPlan();
     }
 
+    function clearSelections() {
+      const selectedCount = chosenActions().length;
+      if (selectedCount === 0) return;
+
+      const confirmed = window.confirm(
+        'Set all actions back to Not selected?\n\n' +
+        'This will remove ' + selectedCount + ' selected action' + (selectedCount === 1 ? '' : 's') +
+        ' from My action plan. Your organisation name, saved owners, dates and notes will be kept.\n\n' +
+        'The status changes cannot be undone.'
+      );
+      if (!confirmed) return;
+
+      ACTIONS.forEach(action => {
+        state.statuses[action.id] = 'Not selected';
+      });
+      // Show all actions again, even if the visitor had filtered by a previous status.
+      state.statusFilter = '';
+      document.getElementById('statusFilter').value = '';
+      saveState();
+      renderAll();
+    }
+
     function exportActionPlan() {
       const selected = chosenActions();
       if (!selected.length) {
@@ -1111,6 +1138,7 @@
       });
 
       document.getElementById('exportBtn').addEventListener('click', exportActionPlan);
+      document.getElementById('clearSelectionsBtn').addEventListener('click', clearSelections);
     }
 
     loadState();
