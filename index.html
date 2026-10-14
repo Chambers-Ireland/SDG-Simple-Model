@@ -874,7 +874,10 @@
     </footer>
   </main>
 
-  <!-- Cookieless aggregate website analytics. Activate Web Analytics in the Vercel project dashboard. -->
+  <!-- Cookieless Vercel Web Analytics, initialised before the tracking script. -->
+  <script>
+    window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+  </script>
   <script defer src="/_vercel/insights/script.js"></script>
   <script src="assets/action-plan-pdf.js"></script>
   <script>
