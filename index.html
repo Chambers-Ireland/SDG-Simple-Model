@@ -158,6 +158,184 @@
     .btn-clear:hover:not(:disabled) { color: var(--chambers-blue); border-color: var(--chambers-gold); background: #fff8df; }
     .btn-clear:disabled { opacity: .48; cursor: not-allowed; }
 
+    .btn-tutorial {
+      border-color: var(--chambers-blue);
+      color: var(--chambers-blue);
+      background: #f7faff;
+    }
+    .btn-tutorial:hover { background: var(--primary-soft); }
+
+    .tutorial-overlay {
+      position: fixed;
+      z-index: 1200;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      padding: 20px;
+      background: rgba(8, 43, 85, 0.68);
+      backdrop-filter: blur(3px);
+    }
+    .tutorial-overlay[hidden] { display: none; }
+
+    .tutorial-dialog {
+      width: min(680px, 100%);
+      max-height: min(760px, calc(100vh - 40px));
+      overflow: auto;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-top: 7px solid var(--chambers-gold);
+      border-radius: 10px;
+      box-shadow: 0 22px 70px rgba(8, 43, 85, 0.3);
+    }
+
+    .tutorial-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 18px;
+      padding: 22px 24px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .tutorial-kicker {
+      color: var(--chambers-gold-dark);
+      font-size: .75rem;
+      font-weight: 900;
+      letter-spacing: .09em;
+      text-transform: uppercase;
+    }
+    .tutorial-header h2 {
+      margin-top: 5px;
+      color: var(--chambers-blue);
+      font-size: 1.45rem;
+      line-height: 1.2;
+    }
+    .tutorial-close {
+      flex: 0 0 auto;
+      width: 38px;
+      height: 38px;
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      background: white;
+      color: var(--chambers-blue);
+      font-size: 1.2rem;
+      line-height: 1;
+    }
+    .tutorial-close:hover { background: var(--primary-soft); }
+
+    .tutorial-body { padding: 22px 24px 12px; }
+    .tutorial-step { display: none; }
+    .tutorial-step.active { display: block; }
+
+    .tutorial-step-number {
+      display: inline-flex;
+      align-items: center;
+      min-height: 29px;
+      padding: 5px 9px;
+      margin-bottom: 11px;
+      border-radius: 999px;
+      background: var(--primary-soft);
+      color: var(--chambers-blue);
+      font-size: .78rem;
+      font-weight: 900;
+    }
+    .tutorial-step h3 {
+      color: var(--chambers-blue);
+      font-size: 1.18rem;
+      line-height: 1.25;
+    }
+    .tutorial-step > p {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: .94rem;
+    }
+
+    .tutorial-demo {
+      margin-top: 17px;
+      padding: 14px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: #f8fafc;
+    }
+    .tutorial-demo-title {
+      color: var(--text);
+      font-weight: 900;
+      font-size: .94rem;
+    }
+    .tutorial-demo p {
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: .85rem;
+    }
+
+    .tutorial-statuses {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 12px;
+    }
+    .tutorial-status {
+      padding: 10px 11px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: white;
+      font-size: .82rem;
+      line-height: 1.35;
+    }
+    .tutorial-status strong {
+      display: block;
+      color: var(--chambers-blue);
+      margin-bottom: 2px;
+    }
+
+    .tutorial-flow {
+      display: grid;
+      gap: 9px;
+      margin-top: 14px;
+    }
+    .tutorial-flow-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 10px 11px;
+      border-left: 4px solid var(--chambers-gold);
+      background: #fffaf0;
+      color: var(--text);
+      font-size: .88rem;
+    }
+    .tutorial-flow-item strong { color: var(--chambers-blue); }
+
+    .tutorial-tip {
+      margin-top: 15px;
+      padding: 11px 12px;
+      border-left: 4px solid var(--teal);
+      background: #eef9f8;
+      color: var(--text);
+      font-size: .86rem;
+      line-height: 1.45;
+    }
+
+    .tutorial-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 16px 24px 22px;
+    }
+    .tutorial-progress {
+      color: var(--muted);
+      font-size: .8rem;
+      font-weight: 700;
+    }
+    .tutorial-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+    .tutorial-actions .btn { min-width: 92px; }
+
+    body.tutorial-open { overflow: hidden; }
+
     .context-panel {
       display: grid;
       grid-template-columns: minmax(0, 1.65fr) minmax(300px, 0.78fr);
@@ -804,6 +982,15 @@
     @media (max-width: 680px) {
       .privacy-banner { display: block; }
       .privacy-banner .btn { display: block; width: 100%; margin-top: 12px; }
+      .tutorial-overlay { padding: 10px; }
+      .tutorial-dialog { max-height: calc(100vh - 20px); }
+      .tutorial-header { padding: 18px 18px 14px; }
+      .tutorial-body { padding: 18px 18px 8px; }
+      .tutorial-footer { align-items: stretch; flex-direction: column; padding: 14px 18px 18px; }
+      .tutorial-actions { display: grid; grid-template-columns: 1fr 1fr; width: 100%; }
+      .tutorial-actions .btn { min-width: 0; width: 100%; }
+      #tutorialNextBtn { grid-column: 1 / -1; }
+      .tutorial-statuses { grid-template-columns: 1fr; }
     }
 
     .screen-reader-only {
@@ -1121,11 +1308,87 @@
         <img src="assets/chambers-ireland-logo-hq.png" alt="Chambers Ireland - Advancing business together">
       </a>
       <div class="header-actions">
+        <button class="btn btn-tutorial" type="button" id="openTutorialBtn">Quick tutorial</button>
         <a class="btn btn-toolkit" href="https://chambers.ie/wp-content/uploads/2022/11/Chambers-Ireland-SDG-Toolkit-for-Business-2021-2.pdf" target="_blank" rel="noopener">Read the full toolkit</a>
         <button class="btn btn-primary" type="button" id="exportBtn">Export PDF action plan</button>
         <button class="btn btn-clear" type="button" id="clearSelectionsBtn" disabled>Clear plan</button>
       </div>
     </header>
+
+
+    <div class="tutorial-overlay" id="tutorialOverlay" hidden>
+      <section class="tutorial-dialog" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle" aria-describedby="tutorialDescription">
+        <div class="tutorial-header">
+          <div>
+            <p class="tutorial-kicker">30-second guide</p>
+            <h2 id="tutorialTitle" tabindex="-1">How to use the Sustainability Action Planner</h2>
+            <p class="screen-reader-only" id="tutorialDescription">A four-step tutorial explaining how to choose actions, build your plan, track progress and export it.</p>
+          </div>
+          <button class="tutorial-close" type="button" id="closeTutorialBtn" aria-label="Close tutorial">&times;</button>
+        </div>
+
+        <div class="tutorial-body">
+          <div class="tutorial-step active" data-tutorial-step="0">
+            <span class="tutorial-step-number">Step 1 of 4</span>
+            <h3>Start by choosing actions that are relevant to your business</h3>
+            <p>Go through the <strong>Toolkit checklist</strong>. You do not need to select everything. For each useful idea, choose the status that best describes where you are now.</p>
+            <div class="tutorial-statuses">
+              <div class="tutorial-status"><strong>Considering</strong>You may do it, but have not committed yet.</div>
+              <div class="tutorial-status"><strong>To do</strong>You want this action in your plan.</div>
+              <div class="tutorial-status"><strong>In progress</strong>You have already started it.</div>
+              <div class="tutorial-status"><strong>Done</strong>You have completed it.</div>
+            </div>
+            <div class="tutorial-tip"><strong>Not selected</strong> simply means the action stays out of your plan.</div>
+          </div>
+
+          <div class="tutorial-step" data-tutorial-step="1">
+            <span class="tutorial-step-number">Step 2 of 4</span>
+            <h3>Your selected actions automatically build your action plan</h3>
+            <p>You do not have to copy anything across. Once you mark an action as Considering, To do, In progress or Done, it appears in the <strong>My action plan</strong> tab.</p>
+            <div class="tutorial-flow">
+              <div class="tutorial-flow-item"><strong>1.</strong><span>Choose a status on an action card.</span></div>
+              <div class="tutorial-flow-item"><strong>2.</strong><span>Open <strong>My action plan</strong>.</span></div>
+              <div class="tutorial-flow-item"><strong>3.</strong><span>Add an <strong>owner</strong> and <strong>target date</strong> if useful.</span></div>
+            </div>
+            <div class="tutorial-tip">The small SDG icons are just guidance showing which Goals the action can support. You do not need to click them.</div>
+          </div>
+
+          <div class="tutorial-step" data-tutorial-step="2">
+            <span class="tutorial-step-number">Step 3 of 4</span>
+            <h3>The progress and impact questions are optional</h3>
+            <p>Use <strong>Add progress &amp; impact details</strong> when you want to make an action more useful as a management tool. You do not need to complete every box.</p>
+            <div class="tutorial-demo">
+              <div class="tutorial-demo-title">Example: Reduce electricity use</div>
+              <p><strong>Where are we now?</strong> Record the current baseline.</p>
+              <p><strong>What are we trying to achieve?</strong> Reduce use by 10%.</p>
+              <p><strong>How will we know?</strong> Compare quarterly electricity use.</p>
+              <p><strong>Who benefits?</strong> The business, employees or wider community.</p>
+            </div>
+            <div class="tutorial-tip">Keep it proportionate. A simple milestone or piece of evidence is completely fine — this is not meant to be a formal ESG report.</div>
+          </div>
+
+          <div class="tutorial-step" data-tutorial-step="3">
+            <span class="tutorial-step-number">Step 4 of 4</span>
+            <h3>Save your work and take a copy away</h3>
+            <p>Your plan is saved in <strong>this browser on this device</strong>, so you can return and continue it later.</p>
+            <div class="tutorial-flow">
+              <div class="tutorial-flow-item"><strong>Export PDF</strong><span>Downloads a clean copy of your selected actions and any details you added.</span></div>
+              <div class="tutorial-flow-item"><strong>Clear plan</strong><span>Removes the saved plan from this browser and lets you start again.</span></div>
+            </div>
+            <div class="tutorial-tip">There is no account to create. Your action-plan entries are not automatically uploaded to a Chambers Ireland database.</div>
+          </div>
+        </div>
+
+        <div class="tutorial-footer">
+          <span class="tutorial-progress" id="tutorialProgress" aria-live="polite">1 of 4</span>
+          <div class="tutorial-actions">
+            <button class="btn" type="button" id="tutorialSkipBtn">Skip</button>
+            <button class="btn" type="button" id="tutorialBackBtn" hidden>Back</button>
+            <button class="btn btn-primary" type="button" id="tutorialNextBtn">Next</button>
+          </div>
+        </div>
+      </section>
+    </div>
 
     <aside class="contact-banner" aria-label="Contact Chambers Ireland">
       <p><strong>Want to get in touch?</strong> For commercial opportunities or information about Chambers Ireland's work nationally and through local Chambers, email <a href="mailto:info@chambers.ie">info@chambers.ie</a>.</p>
@@ -1672,6 +1935,72 @@
       }
     }
 
+    const TUTORIAL_SEEN_KEY = 'sdg-quick-tutorial-v1';
+    const tutorialOverlay = document.getElementById('tutorialOverlay');
+    const tutorialTitle = document.getElementById('tutorialTitle');
+    const tutorialProgress = document.getElementById('tutorialProgress');
+    const tutorialBackBtn = document.getElementById('tutorialBackBtn');
+    const tutorialNextBtn = document.getElementById('tutorialNextBtn');
+    const tutorialSteps = Array.from(document.querySelectorAll('[data-tutorial-step]'));
+    let tutorialStepIndex = 0;
+    let tutorialReturnFocus = null;
+
+    function renderTutorialStep() {
+      tutorialSteps.forEach((step, index) => step.classList.toggle('active', index === tutorialStepIndex));
+      tutorialProgress.textContent = (tutorialStepIndex + 1) + ' of ' + tutorialSteps.length;
+      tutorialBackBtn.hidden = tutorialStepIndex === 0;
+      tutorialNextBtn.textContent = tutorialStepIndex === tutorialSteps.length - 1 ? 'Start planner' : 'Next';
+    }
+
+    function openTutorial() {
+      tutorialReturnFocus = document.activeElement;
+      tutorialStepIndex = 0;
+      renderTutorialStep();
+      tutorialOverlay.hidden = false;
+      document.body.classList.add('tutorial-open');
+      requestAnimationFrame(() => tutorialTitle.focus());
+    }
+
+    function rememberTutorialSeen() {
+      try { localStorage.setItem(TUTORIAL_SEEN_KEY, 'seen'); } catch (error) {}
+    }
+
+    function closeTutorial(rememberSeen = true) {
+      tutorialOverlay.hidden = true;
+      document.body.classList.remove('tutorial-open');
+      if (rememberSeen) rememberTutorialSeen();
+      if (tutorialReturnFocus && typeof tutorialReturnFocus.focus === 'function') tutorialReturnFocus.focus();
+    }
+
+    function setupTutorial() {
+      document.getElementById('openTutorialBtn').addEventListener('click', openTutorial);
+      document.getElementById('closeTutorialBtn').addEventListener('click', () => closeTutorial(true));
+      document.getElementById('tutorialSkipBtn').addEventListener('click', () => closeTutorial(true));
+      tutorialBackBtn.addEventListener('click', () => {
+        if (tutorialStepIndex > 0) tutorialStepIndex -= 1;
+        renderTutorialStep();
+      });
+      tutorialNextBtn.addEventListener('click', () => {
+        if (tutorialStepIndex < tutorialSteps.length - 1) {
+          tutorialStepIndex += 1;
+          renderTutorialStep();
+          tutorialTitle.focus();
+          return;
+        }
+        closeTutorial(true);
+      });
+      tutorialOverlay.addEventListener('click', event => {
+        if (event.target === tutorialOverlay) closeTutorial(true);
+      });
+      document.addEventListener('keydown', event => {
+        if (event.key === 'Escape' && !tutorialOverlay.hidden) closeTutorial(true);
+      });
+
+      let tutorialSeen = false;
+      try { tutorialSeen = localStorage.getItem(TUTORIAL_SEEN_KEY) === 'seen'; } catch (error) {}
+      if (!tutorialSeen) openTutorial();
+    }
+
     function setupEvents() {
       document.getElementById('orgName').addEventListener('input', event => {
         state.organisation = event.target.value;
@@ -1726,6 +2055,7 @@
     document.getElementById('orgName').value = state.organisation;
     setupEvents();
     renderAll();
+    setupTutorial();
   </script>
 </body>
 </html>
