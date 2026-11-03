@@ -136,12 +136,17 @@
         actionNumber++;
         ensureRoom(60);
         write(actionNumber + '. ' + (action.title || 'Untitled action'), {size: 11.3, bold: true, color: NAVY, after: 4});
-        if (action.description) write(action.description, {size: 9.3, color: MUTED, after: 4});
+        if (action.description) write('Why this matters: ' + action.description, {size: 9.3, color: MUTED, after: 4});
         write('Status: ' + status, {size: 9.3, bold: true});
         write('Category: ' + (action.category || 'Not specified'), {size: 9.3});
-        write('Linked SDGs: ' + (Array.isArray(action.sdgs) ? action.sdgs.map(n => 'SDG ' + n).join(', ') : 'Not specified'), {size: 9.3});
+        write('SDGs this action can support: ' + (Array.isArray(action.sdgs) ? action.sdgs.map(n => 'SDG ' + n).join(', ') : 'Not specified'), {size: 9.3});
         write('Owner: ' + (action.owner || 'Not assigned'), {size: 9.3});
         write('Target date: ' + (action.targetDate || 'Not set'), {size: 9.3});
+        if (action.currentPosition) write('Where are we now? ' + action.currentPosition, {size: 9.3});
+        if (action.desiredOutcome) write('What are we trying to change or achieve? ' + action.desiredOutcome, {size: 9.3});
+        if (action.progressMeasure) write("How will we know we're making progress? " + action.progressMeasure, {size: 9.3});
+        if (action.whoBenefits) write('Who will benefit? ' + action.whoBenefits, {size: 9.3});
+        write('Leave No One Behind check: ' + (action.inclusivityConsidered ? 'Considered' : 'Not recorded'), {size: 9.3});
         write('Notes / evidence: ' + (action.notes || 'None recorded'), {size: 9.3, after: 7});
         divider();
       }
