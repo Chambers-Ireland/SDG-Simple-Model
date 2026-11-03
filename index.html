@@ -542,10 +542,37 @@
       display: flex;
       align-items: center;
       flex-wrap: wrap;
-      gap: 6px;
+      gap: 7px;
       margin-top: 12px;
+      padding-top: 11px;
+      border-top: 1px solid var(--border);
       color: var(--muted);
       font-size: 0.8rem;
+    }
+
+    .linked-goals-label {
+      width: 100%;
+      color: var(--chambers-blue);
+      font-size: 0.76rem;
+      font-weight: 900;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .linked-goals-note {
+      width: 100%;
+      margin-top: -2px;
+      color: var(--muted);
+      font-size: 0.76rem;
+      line-height: 1.35;
+    }
+
+    .linked-goals .sdg-icon,
+    .linked-goals .sdg-icon img {
+      width: 36px;
+      height: 36px;
+      min-width: 36px;
+      min-height: 36px;
     }
 
     .goal-tag {
@@ -851,8 +878,55 @@
     .sdg-icon { display: inline-flex; align-items: center; justify-content: center; min-width: 49px; min-height: 49px; }
     .sdg-icon img { display: block; width: 49px; height: 49px; object-fit: contain; }
     .sdg-icon .goal-tag:not([hidden]) { display: inline-flex; min-height: 30px; align-items: center; }
-    .plan-sdg-icons { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
-    .plan-sdg-icons .sdg-icon, .plan-sdg-icons .sdg-icon img { width: 42px; height: 42px; min-width: 42px; min-height: 42px; }
+    .plan-sdg-strip {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin: 0 0 14px;
+      padding: 10px 12px;
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+    }
+
+    .plan-sdg-strip .sdg-strip-copy {
+      flex: 1 1 180px;
+      min-width: 160px;
+    }
+
+    .plan-sdg-strip .sdg-strip-label {
+      display: block;
+      color: var(--chambers-blue);
+      font-size: 0.76rem;
+      font-weight: 900;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .plan-sdg-strip .sdg-strip-note {
+      display: block;
+      margin-top: 2px;
+      color: var(--muted);
+      font-size: 0.75rem;
+      line-height: 1.35;
+    }
+
+    .plan-sdg-icons {
+      display: flex;
+      flex: 0 0 auto;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 5px;
+    }
+
+    .plan-sdg-icons .sdg-icon,
+    .plan-sdg-icons .sdg-icon img {
+      width: 34px;
+      height: 34px;
+      min-width: 34px;
+      min-height: 34px;
+    }
     .un-note { font-size: .72rem !important; line-height: 1.4; }
     .site-footer .un-note a { font-size: inherit; font-weight: 400; }
     .site-footer > div { min-width: 0; }
@@ -1378,10 +1452,6 @@
             <div class="action-title">${escapeHtml(action.title)}</div>
           </div>
           <div class="action-desc">${escapeHtml(action.description)}</div>
-          <div class="linked-goals">
-            <span>SDGs are connected — this action can support:</span>
-            ${renderSdgIcons(action.sdgs)}
-          </div>
           <div class="status-control" role="group" aria-label="Checklist status for ${escapeHtml(action.title)}">
             ${STATUSES.map(status => `
               <button
@@ -1393,6 +1463,11 @@
                 ${status}
               </button>
             `).join('')}
+          </div>
+          <div class="linked-goals">
+            <span class="linked-goals-label">Related SDGs</span>
+            ${renderSdgIcons(action.sdgs)}
+            <span class="linked-goals-note">One action can contribute to more than one goal.</span>
           </div>
         </article>
       `;
@@ -1464,14 +1539,19 @@
             <div>
               <h3>${escapeHtml(action.title)}</h3>
               <div class="plan-meta">${escapeHtml(action.category)}</div>
-              <div class="plan-connected"><strong>SDGs are connected.</strong> This action can support:</div>
-              <div class="plan-sdg-icons">${renderSdgIcons(action.sdgs)}</div>
             </div>
             <select class="status-select plan-status" data-id="${escapeHtml(action.id)}" aria-label="Change status for ${escapeHtml(action.title)}">
               ${STATUSES.map(status => `<option value="${status}" ${state.statuses[action.id] === status ? 'selected' : ''}>${status}</option>`).join('')}
             </select>
           </div>
           <p class="plan-why"><strong>Why this matters:</strong> ${escapeHtml(action.description)}</p>
+          <div class="plan-sdg-strip">
+            <div class="sdg-strip-copy">
+              <span class="sdg-strip-label">Related SDGs</span>
+              <span class="sdg-strip-note">This action can support several goals at the same time.</span>
+            </div>
+            <div class="plan-sdg-icons">${renderSdgIcons(action.sdgs)}</div>
+          </div>
           <div class="plan-fields">
             <div class="plan-field">
               <label for="owner-${escapeHtml(action.id)}">Owner</label>
