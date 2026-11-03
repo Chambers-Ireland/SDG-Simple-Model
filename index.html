@@ -644,6 +644,86 @@
 
     .plan-field.notes { grid-column: 1 / -1; }
 
+    .plan-why {
+      margin: -2px 0 14px;
+      padding: 10px 12px;
+      background: #f7f9fb;
+      border-left: 4px solid var(--chambers-gold);
+      color: var(--muted);
+      font-size: 0.86rem;
+      line-height: 1.45;
+    }
+
+    .plan-why strong { color: var(--chambers-blue); }
+
+    .plan-connected {
+      margin-top: 7px;
+      color: var(--muted);
+      font-size: 0.8rem;
+      line-height: 1.4;
+    }
+
+    .plan-connected strong { color: var(--chambers-blue); }
+
+    .progress-details {
+      grid-column: 1 / -1;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      background: #fbfcfd;
+    }
+
+    .progress-details summary {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 11px 13px;
+      color: var(--chambers-blue);
+      font-size: 0.88rem;
+      font-weight: 900;
+      cursor: pointer;
+      list-style: none;
+    }
+
+    .progress-details summary::-webkit-details-marker { display: none; }
+    .progress-details summary::after { content: "+"; font-size: 1.1rem; color: var(--chambers-gold-dark); }
+    .progress-details[open] summary::after { content: "–"; }
+    .progress-details summary span { margin-left: auto; color: var(--muted); font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
+
+    .progress-details-body {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 11px;
+      padding: 14px;
+      border-top: 1px solid var(--border);
+      background: white;
+    }
+
+    .progress-details .plan-field.full { grid-column: 1 / -1; }
+
+    .inclusivity-check {
+      grid-column: 1 / -1;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 11px 12px;
+      border-left: 4px solid var(--teal);
+      background: #eef9f8;
+    }
+
+    .inclusivity-check input {
+      flex: 0 0 auto;
+      width: 18px;
+      height: 18px;
+      margin-top: 2px;
+      accent-color: var(--chambers-blue);
+    }
+
+    .inclusivity-check label { cursor: pointer; }
+    .inclusivity-check strong { display: block; color: var(--chambers-blue); font-size: 0.86rem; }
+    .inclusivity-check span { display: block; margin-top: 2px; color: var(--muted); font-size: 0.82rem; line-height: 1.4; }
+
     .empty {
       padding: 42px 20px;
       border: 1px dashed var(--border);
@@ -990,7 +1070,7 @@
           </div>
           <div class="planner-intro-step">
             <span class="planner-intro-number" aria-hidden="true">2</span>
-            <p><strong>My action plan:</strong> Your selected actions appear here automatically. Add an owner, target date and notes, then download your plan as a PDF.</p>
+            <p><strong>My action plan:</strong> Your selected actions appear here automatically. Add an owner and target date, then optionally add simple progress and impact details before downloading your plan as a PDF.</p>
           </div>
         </div>
         <p class="planner-intro-note">Your progress is saved in this browser, so you can return and update it later.</p>
@@ -1106,13 +1186,26 @@
     const STORAGE_KEY = 'sdg-toolkit-checklist-v2';
     const LEGACY_STORAGE_KEY = 'sdg-action-planner-v1';
 
+    function emptyActionDetails() {
+      return {
+        owner: '',
+        targetDate: '',
+        currentPosition: '',
+        desiredOutcome: '',
+        progressMeasure: '',
+        whoBenefits: '',
+        inclusivityConsidered: false,
+        notes: ''
+      };
+    }
+
     const state = {
       organisation: '',
       search: '',
       category: '',
       statusFilter: '',
       statuses: Object.fromEntries(ACTIONS.map(action => [action.id, 'Not selected'])),
-      details: Object.fromEntries(ACTIONS.map(action => [action.id, { owner: '', targetDate: '', notes: '' }]))
+      details: Object.fromEntries(ACTIONS.map(action => [action.id, emptyActionDetails()]))
     };
 
     function escapeHtml(value) {
@@ -1154,6 +1247,11 @@
             state.details[action.id] = {
               owner: typeof detail.owner === 'string' ? detail.owner : '',
               targetDate: typeof detail.targetDate === 'string' ? detail.targetDate : '',
+              currentPosition: typeof detail.currentPosition === 'string' ? detail.currentPosition : '',
+              desiredOutcome: typeof detail.desiredOutcome === 'string' ? detail.desiredOutcome : '',
+              progressMeasure: typeof detail.progressMeasure === 'string' ? detail.progressMeasure : '',
+              whoBenefits: typeof detail.whoBenefits === 'string' ? detail.whoBenefits : '',
+              inclusivityConsidered: detail.inclusivityConsidered === true,
               notes: typeof detail.notes === 'string' ? detail.notes : ''
             };
           });
@@ -1185,7 +1283,7 @@
         chosenActions().length ||
         ACTIONS.some(action => {
           const detail = state.details[action.id];
-          return detail.owner.trim() || detail.targetDate.trim() || detail.notes.trim();
+          return detail.owner.trim() || detail.targetDate.trim() || detail.currentPosition.trim() || detail.desiredOutcome.trim() || detail.progressMeasure.trim() || detail.whoBenefits.trim() || detail.inclusivityConsidered || detail.notes.trim();
         })
       );
     }
@@ -1281,7 +1379,7 @@
           </div>
           <div class="action-desc">${escapeHtml(action.description)}</div>
           <div class="linked-goals">
-            <span>Linked goals:</span>
+            <span>SDGs are connected — this action can support:</span>
             ${renderSdgIcons(action.sdgs)}
           </div>
           <div class="status-control" role="group" aria-label="Checklist status for ${escapeHtml(action.title)}">
@@ -1312,7 +1410,7 @@
       plan.innerHTML = `
         <section class="panel plan-intro">
           <h2>My action plan</h2>
-          <p>Considering lets you keep ideas visible without committing. Add an owner, target date and notes when you are ready. Entries stay saved in this browser; download your PDF to keep a copy.</p>
+          <p>Considering lets you keep ideas visible without committing. Add an owner and target date when you are ready, then use the optional progress and impact prompts if they are useful. Entries stay saved in this browser; download your PDF to keep a copy.</p>
         </section>
         ${ACTIVE_STATUSES.map(status => {
           const actions = chosen.filter(action => state.statuses[action.id] === status);
@@ -1335,6 +1433,13 @@
         });
       });
 
+      plan.querySelectorAll('.plan-check').forEach(field => {
+        field.addEventListener('change', () => {
+          state.details[field.dataset.id][field.dataset.field] = field.checked;
+          saveState();
+        });
+      });
+
       plan.querySelectorAll('.plan-status').forEach(select => {
         select.addEventListener('change', () => {
           state.statuses[select.dataset.id] = select.value;
@@ -1346,17 +1451,27 @@
 
     function renderPlanCard(action) {
       const detail = state.details[action.id];
+      const hasProgressDetails = Boolean(
+        detail.currentPosition ||
+        detail.desiredOutcome ||
+        detail.progressMeasure ||
+        detail.whoBenefits ||
+        detail.inclusivityConsidered
+      );
       return `
         <article class="panel plan-card">
           <div class="plan-card-top">
             <div>
               <h3>${escapeHtml(action.title)}</h3>
-              <div class="plan-meta">${escapeHtml(action.category)}</div><div class="plan-sdg-icons">${renderSdgIcons(action.sdgs)}</div>
+              <div class="plan-meta">${escapeHtml(action.category)}</div>
+              <div class="plan-connected"><strong>SDGs are connected.</strong> This action can support:</div>
+              <div class="plan-sdg-icons">${renderSdgIcons(action.sdgs)}</div>
             </div>
             <select class="status-select plan-status" data-id="${escapeHtml(action.id)}" aria-label="Change status for ${escapeHtml(action.title)}">
               ${STATUSES.map(status => `<option value="${status}" ${state.statuses[action.id] === status ? 'selected' : ''}>${status}</option>`).join('')}
             </select>
           </div>
+          <p class="plan-why"><strong>Why this matters:</strong> ${escapeHtml(action.description)}</p>
           <div class="plan-fields">
             <div class="plan-field">
               <label for="owner-${escapeHtml(action.id)}">Owner</label>
@@ -1366,6 +1481,36 @@
               <label for="date-${escapeHtml(action.id)}">Target date</label>
               <input class="plan-detail" id="date-${escapeHtml(action.id)}" data-id="${escapeHtml(action.id)}" data-field="targetDate" type="date" autocomplete="off" value="${escapeHtml(detail.targetDate)}">
             </div>
+
+            <details class="progress-details" ${hasProgressDetails ? 'open' : ''}>
+              <summary>Add progress &amp; impact details <span>Optional</span></summary>
+              <div class="progress-details-body">
+                <div class="plan-field">
+                  <label for="current-${escapeHtml(action.id)}">Where are we now?</label>
+                  <textarea class="plan-detail" id="current-${escapeHtml(action.id)}" data-id="${escapeHtml(action.id)}" data-field="currentPosition" autocomplete="off" placeholder="A simple baseline, current position or starting point">${escapeHtml(detail.currentPosition)}</textarea>
+                </div>
+                <div class="plan-field">
+                  <label for="outcome-${escapeHtml(action.id)}">What are we trying to change or achieve?</label>
+                  <textarea class="plan-detail" id="outcome-${escapeHtml(action.id)}" data-id="${escapeHtml(action.id)}" data-field="desiredOutcome" autocomplete="off" placeholder="The result you would like to see">${escapeHtml(detail.desiredOutcome)}</textarea>
+                </div>
+                <div class="plan-field">
+                  <label for="measure-${escapeHtml(action.id)}">How will we know we're making progress?</label>
+                  <textarea class="plan-detail" id="measure-${escapeHtml(action.id)}" data-id="${escapeHtml(action.id)}" data-field="progressMeasure" autocomplete="off" placeholder="A number, percentage, milestone, evidence or other simple measure">${escapeHtml(detail.progressMeasure)}</textarea>
+                </div>
+                <div class="plan-field">
+                  <label for="benefit-${escapeHtml(action.id)}">Who will benefit?</label>
+                  <textarea class="plan-detail" id="benefit-${escapeHtml(action.id)}" data-id="${escapeHtml(action.id)}" data-field="whoBenefits" autocomplete="off" placeholder="Employees, customers, suppliers, community or another group">${escapeHtml(detail.whoBenefits)}</textarea>
+                </div>
+                <div class="inclusivity-check">
+                  <input class="plan-check" id="inclusive-${escapeHtml(action.id)}" data-id="${escapeHtml(action.id)}" data-field="inclusivityConsidered" type="checkbox" ${detail.inclusivityConsidered ? 'checked' : ''}>
+                  <label for="inclusive-${escapeHtml(action.id)}">
+                    <strong>Leave No One Behind check</strong>
+                    <span>Have you considered whether this action is accessible and inclusive, and whether anyone could unintentionally be left out?</span>
+                  </label>
+                </div>
+              </div>
+            </details>
+
             <div class="plan-field notes">
               <label for="notes-${escapeHtml(action.id)}">Notes or evidence</label>
               <textarea class="plan-detail" id="notes-${escapeHtml(action.id)}" data-id="${escapeHtml(action.id)}" data-field="notes" autocomplete="off" placeholder="Next step, progress update, result or evidence collected">${escapeHtml(detail.notes)}</textarea>
@@ -1385,7 +1530,7 @@
       if (!hasSavedPlanContent()) return;
       const confirmed = window.confirm(
         'Clear this action plan and start again?\\n\\n' +
-        'This removes every selected action, the saved organisation name, and all owners, target dates and notes. ' +
+        'This removes every selected action, the saved organisation name, and all saved plan, progress and impact details. ' +
         'This data will be cleared from this browser and cannot be recovered from the planner.'
       );
       if (!confirmed) return;
@@ -1396,7 +1541,7 @@
       state.statusFilter = '';
       ACTIONS.forEach(action => {
         state.statuses[action.id] = 'Not selected';
-        state.details[action.id] = { owner: '', targetDate: '', notes: '' };
+        state.details[action.id] = emptyActionDetails();
       });
       document.getElementById('orgName').value = '';
       document.getElementById('searchInput').value = '';
@@ -1432,6 +1577,11 @@
               status: state.statuses[action.id],
               owner: detail.owner || '',
               targetDate: detail.targetDate || '',
+              currentPosition: detail.currentPosition || '',
+              desiredOutcome: detail.desiredOutcome || '',
+              progressMeasure: detail.progressMeasure || '',
+              whoBenefits: detail.whoBenefits || '',
+              inclusivityConsidered: detail.inclusivityConsidered === true,
               notes: detail.notes || ''
             };
           })
