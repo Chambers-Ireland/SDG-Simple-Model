@@ -1311,6 +1311,9 @@
         <button class="btn btn-tutorial" type="button" id="openTutorialBtn">Quick tutorial</button>
         <a class="btn btn-toolkit" href="https://chambers.ie/wp-content/uploads/2022/11/Chambers-Ireland-SDG-Toolkit-for-Business-2021-2.pdf" target="_blank" rel="noopener">Read the full toolkit</a>
         <button class="btn btn-primary" type="button" id="exportBtn">Export PDF action plan</button>
+        <button class="btn btn-clear" type="button" id="saveProgressBtn" disabled title="Download an editable copy of this plan">Save progress</button>
+        <button class="btn" type="button" id="uploadProgressBtn" title="Open a progress file saved from this planner">Upload progress</button>
+        <input type="file" id="progressFileInput" accept=".json,application/json" hidden>
         <button class="btn btn-clear" type="button" id="clearSelectionsBtn" disabled>Clear plan</button>
       </div>
     </header>
@@ -1372,7 +1375,9 @@
             <h3>Save your work and take a copy away</h3>
             <p>Your plan is saved in <strong>this browser on this device</strong>, so you can return and continue it later.</p>
             <div class="tutorial-flow">
-              <div class="tutorial-flow-item"><strong>Export PDF</strong><span>Downloads a clean copy of your selected actions and any details you added.</span></div>
+              <div class="tutorial-flow-item"><strong>Save progress</strong><span>Downloads an editable progress file containing your current selections, statuses and plan details.</span></div>
+              <div class="tutorial-flow-item"><strong>Upload progress</strong><span>Opens a progress file from this planner so you or a colleague can continue the same plan on another device.</span></div>
+              <div class="tutorial-flow-item"><strong>Export PDF</strong><span>Downloads a clean, readable copy of your selected actions and any details you added.</span></div>
               <div class="tutorial-flow-item"><strong>Clear plan</strong><span>Removes the saved plan from this browser and lets you start again.</span></div>
             </div>
             <div class="tutorial-tip">There is no account to create. Your action-plan entries are not automatically uploaded to a Chambers Ireland database.</div>
@@ -1410,7 +1415,7 @@
             <p><strong>My action plan:</strong> Your selected actions appear here automatically. Add an owner and target date, then optionally add simple progress and impact details before downloading your plan as a PDF.</p>
           </div>
         </div>
-        <p class="planner-intro-note">Your progress is saved in this browser, so you can return and update it later.</p>
+        <p class="planner-intro-note">Your progress is saved in this browser, so you can return and update it later. Use <strong>Save progress</strong> if you want an editable copy that can be opened on another device or by a colleague.</p>
       </div>
       <aside class="context-aside" aria-labelledby="resource-guide-heading">
         <p class="context-aside-label">Make the most of these resources</p>
@@ -1482,7 +1487,7 @@
     <footer class="site-footer">
       <div>
         <strong>Chambers Ireland Business Sustainability Action Planner</strong>
-        <p>The SDG icons alongside each action show which Goals it supports. Entries are saved in this browser; export a PDF to retain a separate copy.</p><p class="un-note">The content of this publication has not been approved by the United Nations and does not reflect the views of the United Nations or its officials or Member States. <a href="https://www.un.org/sustainabledevelopment/" target="_blank" rel="noopener">United Nations Sustainable Development Goals</a>.</p>
+        <p>The SDG icons alongside each action show which Goals it supports. Entries are saved in this browser; use Save progress to transfer an editable plan, or export a PDF for a readable copy.</p><p class="un-note">The content of this publication has not been approved by the United Nations and does not reflect the views of the United Nations or its officials or Member States. <a href="https://www.un.org/sustainabledevelopment/" target="_blank" rel="noopener">United Nations Sustainable Development Goals</a>.</p>
       </div>
       <div class="footer-links">
         <a href="https://chambers.ie/wp-content/uploads/2022/11/Chambers-Ireland-SDG-Toolkit-for-Business-2021-2.pdf" target="_blank" rel="noopener">View the source toolkit (PDF)</a>
@@ -1522,6 +1527,8 @@
     };
     const STORAGE_KEY = 'sdg-toolkit-checklist-v2';
     const LEGACY_STORAGE_KEY = 'sdg-action-planner-v1';
+    const PROGRESS_FILE_FORMAT = 'chambers-ireland-business-sustainability-action-planner';
+    const PROGRESS_FILE_VERSION = 1;
 
     function emptyActionDetails() {
       return {
@@ -1629,6 +1636,7 @@
       const chosen = chosenActions();
       document.getElementById('statChosen').textContent = chosen.length;
       document.getElementById('clearSelectionsBtn').disabled = !hasSavedPlanContent();
+      document.getElementById('saveProgressBtn').disabled = !hasSavedPlanContent();
       document.getElementById('statConsidering').textContent = chosen.filter(action => state.statuses[action.id] === 'Considering').length;
       document.getElementById('statTodo').textContent = chosen.filter(action => state.statuses[action.id] === 'To do').length;
       document.getElementById('statProgress').textContent = chosen.filter(action => state.statuses[action.id] === 'In progress').length;
@@ -1900,7 +1908,128 @@
       renderAll();
     }
 
-        function exportActionPlan() {
+    function normaliseProgressPlan(plan) {
+      if (!plan || typeof plan !== 'object' || !plan.statuses || typeof plan.statuses !== 'object' || !plan.details || typeof plan.details !== 'object') {
+        return null;
+      }
+
+      const imported = {
+        organisation: typeof plan.organisation === 'string' ? plan.organisation : '',
+        statuses: Object.fromEntries(ACTIONS.map(action => [action.id, 'Not selected'])),
+        details: Object.fromEntries(ACTIONS.map(action => [action.id, emptyActionDetails()]))
+      };
+
+      ACTIONS.forEach(action => {
+        const status = normaliseStatus(plan.statuses[action.id]);
+        if (STATUSES.includes(status)) imported.statuses[action.id] = status;
+
+        const detail = plan.details[action.id];
+        if (!detail || typeof detail !== 'object') return;
+        imported.details[action.id] = {
+          owner: typeof detail.owner === 'string' ? detail.owner : '',
+          targetDate: typeof detail.targetDate === 'string' ? detail.targetDate : '',
+          currentPosition: typeof detail.currentPosition === 'string' ? detail.currentPosition : '',
+          desiredOutcome: typeof detail.desiredOutcome === 'string' ? detail.desiredOutcome : '',
+          progressMeasure: typeof detail.progressMeasure === 'string' ? detail.progressMeasure : '',
+          whoBenefits: typeof detail.whoBenefits === 'string' ? detail.whoBenefits : '',
+          inclusivityConsidered: detail.inclusivityConsidered === true,
+          notes: typeof detail.notes === 'string' ? detail.notes : ''
+        };
+      });
+
+      return imported;
+    }
+
+    function downloadProgressFile() {
+      if (!hasSavedPlanContent()) {
+        alert('Add something to your plan before saving progress.');
+        return;
+      }
+
+      const payload = {
+        format: PROGRESS_FILE_FORMAT,
+        version: PROGRESS_FILE_VERSION,
+        exportedAt: new Date().toISOString(),
+        planner: {
+          organisation: state.organisation,
+          statuses: state.statuses,
+          details: state.details
+        }
+      };
+
+      const safeName = (state.organisation.trim() || 'business')
+        .normalize('NFKD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/[^a-z0-9]+/gi, '-')
+        .replace(/^-+|-+$/g, '')
+        .toLowerCase() || 'business';
+
+      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'business-sustainability-progress-' + safeName + '.json';
+      link.style.display = 'none';
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 0);
+    }
+
+    async function importProgressFile(file) {
+      if (!file) return;
+      if (file.size > 2 * 1024 * 1024) {
+        alert('This progress file is too large to be a valid planner file.');
+        return;
+      }
+
+      let payload;
+      try {
+        payload = JSON.parse(await file.text());
+      } catch (error) {
+        alert('This file could not be read. Please choose a progress file saved from this planner.');
+        return;
+      }
+
+      if (!payload || payload.format !== PROGRESS_FILE_FORMAT || payload.version !== PROGRESS_FILE_VERSION) {
+        alert('This is not a compatible Chambers Ireland Sustainability Action Planner progress file.');
+        return;
+      }
+
+      const imported = normaliseProgressPlan(payload.planner);
+      if (!imported) {
+        alert('This progress file is incomplete or damaged and could not be loaded.');
+        return;
+      }
+
+      if (hasSavedPlanContent()) {
+        const confirmed = window.confirm(
+          'Load this saved progress file?\n\n' +
+          'This will replace the organisation name, selected actions, statuses and plan details currently saved in this browser. ' +
+          'Choose Cancel if you want to keep the plan currently on this device.'
+        );
+        if (!confirmed) return;
+      }
+
+      state.organisation = imported.organisation;
+      state.search = '';
+      state.category = '';
+      state.statusFilter = '';
+      ACTIONS.forEach(action => {
+        state.statuses[action.id] = imported.statuses[action.id];
+        state.details[action.id] = imported.details[action.id];
+      });
+
+      document.getElementById('orgName').value = state.organisation;
+      document.getElementById('searchInput').value = '';
+      document.getElementById('categoryFilter').value = '';
+      document.getElementById('statusFilter').value = '';
+      saveState();
+      renderAll();
+      alert('Progress loaded successfully. You can continue editing this plan on this device.');
+    }
+
+    function exportActionPlan() {
       const selected = chosenActions();
       if (!selected.length) {
         alert('Choose at least one action as Considering, To do, In progress or Done before downloading your PDF.');
@@ -2034,6 +2163,20 @@
       });
 
       document.getElementById('exportBtn').addEventListener('click', exportActionPlan);
+      document.getElementById('saveProgressBtn').addEventListener('click', downloadProgressFile);
+
+      const progressFileInput = document.getElementById('progressFileInput');
+      document.getElementById('uploadProgressBtn').addEventListener('click', () => {
+        progressFileInput.value = '';
+        progressFileInput.click();
+      });
+      progressFileInput.addEventListener('change', async event => {
+        const file = event.target.files && event.target.files[0];
+        if (!file) return;
+        await importProgressFile(file);
+        event.target.value = '';
+      });
+
       document.getElementById('clearSelectionsBtn').addEventListener('click', clearSelections);
     }
 
