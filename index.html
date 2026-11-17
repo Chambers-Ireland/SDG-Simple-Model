@@ -1310,9 +1310,9 @@
       <div class="header-actions">
         <button class="btn btn-tutorial" type="button" id="openTutorialBtn">Quick tutorial</button>
         <a class="btn btn-toolkit" href="https://chambers.ie/wp-content/uploads/2022/11/Chambers-Ireland-SDG-Toolkit-for-Business-2021-2.pdf" target="_blank" rel="noopener">Read the full toolkit</a>
-        <button class="btn btn-primary" type="button" id="exportBtn">Export PDF action plan</button>
-        <button class="btn btn-clear" type="button" id="saveProgressBtn" disabled title="Download an editable copy of this plan">Save progress</button>
-        <button class="btn" type="button" id="uploadProgressBtn" title="Open a progress file saved from this planner">Upload progress</button>
+        <button class="btn btn-primary" type="button" id="exportBtn" title="Download a PDF report to read, print or share; this is not an editable backup">Download PDF (print/share)</button>
+        <button class="btn btn-clear" type="button" id="saveProgressBtn" disabled title="Keep a backup or move your plan to another device">Download editable plan</button>
+        <button class="btn" type="button" id="uploadProgressBtn" title="Choose a previously downloaded editable plan to carry on">Continue saved plan</button>
         <input type="file" id="progressFileInput" accept=".json,application/json" hidden>
         <button class="btn btn-clear" type="button" id="clearSelectionsBtn" disabled>Clear plan</button>
       </div>
@@ -1325,7 +1325,7 @@
           <div>
             <p class="tutorial-kicker">45-second guide</p>
             <h2 id="tutorialTitle" tabindex="-1">How to use the Sustainability Action Planner</h2>
-            <p class="screen-reader-only" id="tutorialDescription">A five-step tutorial explaining how to choose actions, build your plan, track progress, save or share progress, and export it.</p>
+            <p class="screen-reader-only" id="tutorialDescription">A five-step tutorial explaining how to choose actions, build your plan, and download or continue a saved plan without an account.</p>
           </div>
           <button class="tutorial-close" type="button" id="closeTutorialBtn" aria-label="Close tutorial">&times;</button>
         </div>
@@ -1372,25 +1372,26 @@
 
           <div class="tutorial-step" data-tutorial-step="3">
             <span class="tutorial-step-number">Step 4 of 5</span>
-            <h3>Save or share your progress</h3>
-            <p>Your plan is automatically saved in <strong>this browser on this device</strong>. If you want to move it to another computer or let a colleague continue it, use the progress file.</p>
+            <h3>Leave now, continue your plan later</h3>
+            <p><strong>Coming back on this same device and browser?</strong> Your changes save automatically. Just open the planner again to carry on.</p>
+            <p><strong>Using another device or sharing with a colleague?</strong> Follow these two steps:</p>
             <div class="tutorial-flow">
-              <div class="tutorial-flow-item"><strong>1. Save progress</strong><span>Downloads a small editable file containing your current action selections, statuses, owners, dates, notes and progress details.</span></div>
-              <div class="tutorial-flow-item"><strong>2. Send the file</strong><span>You can keep it as a backup or send it directly to a colleague. Chambers Ireland does not receive the file automatically.</span></div>
-              <div class="tutorial-flow-item"><strong>3. Upload progress</strong><span>Open this planner on another device, choose <strong>Upload progress</strong>, select the saved file and the plan will be restored so work can continue.</span></div>
+              <div class="tutorial-flow-item"><strong>1. Download editable plan</strong><span>Click this button to save a copy of your work. Keep the downloaded file somewhere safe, or send it to a colleague.</span></div>
+              <div class="tutorial-flow-item"><strong>2. Continue saved plan</strong><span>Open this planner, click <strong>Continue saved plan</strong> and choose the file you downloaded. Your actions, dates and notes will appear so you can keep working.</span></div>
             </div>
-            <div class="tutorial-tip"><strong>Already have a plan open?</strong> The planner will ask before replacing the progress currently saved in that browser.</div>
+            <div class="tutorial-tip"><strong>Remember:</strong> You don't need to open or edit the downloaded file yourself. Keep it as a backup in case your browser data is cleared. If a plan is already open, we'll ask before replacing it.</div>
           </div>
+
 
           <div class="tutorial-step" data-tutorial-step="4">
             <span class="tutorial-step-number">Step 5 of 5</span>
-            <h3>Take a readable copy or start again</h3>
-            <p>The progress file is for continuing the editable plan. Use the PDF when you want a clean copy to read, print or share as a finished action plan.</p>
+            <h3>Want a copy to read, print or share?</h3>
+            <p>Choose <strong>Download PDF (print/share)</strong> for a readable report. A PDF cannot be uploaded to continue your work. To keep editing later or move devices, choose <strong>Download editable plan</strong> instead.</p>
             <div class="tutorial-flow">
-              <div class="tutorial-flow-item"><strong>Export PDF</strong><span>Downloads a clean, readable copy of your selected actions and any details you added.</span></div>
-              <div class="tutorial-flow-item"><strong>Clear plan</strong><span>Removes the saved plan from this browser and lets you start again.</span></div>
+              <div class="tutorial-flow-item"><strong>Download PDF (print/share)</strong><span>Creates a report of your selected actions and details for reading or printing.</span></div>
+              <div class="tutorial-flow-item"><strong>Clear plan</strong><span>Removes the plan saved in this browser and lets you start again.</span></div>
             </div>
-            <div class="tutorial-tip">There is no account to create. Your action-plan entries are not automatically uploaded to a Chambers Ireland database.</div>
+            <div class="tutorial-tip">No account is needed. Your action plan is not automatically sent to Chambers Ireland.</div>
           </div>
         </div>
 
@@ -1425,7 +1426,7 @@
             <p><strong>My action plan:</strong> Your selected actions appear here automatically. Add an owner and target date, then optionally add simple progress and impact details before downloading your plan as a PDF.</p>
           </div>
         </div>
-        <p class="planner-intro-note">Your progress is saved in this browser, so you can return and update it later. Use <strong>Save progress</strong> if you want an editable copy that can be opened on another device or by a colleague.</p>
+        <p class="planner-intro-note"><strong>Come back later:</strong> Your work saves automatically on this device and browser. To keep a backup or switch devices, choose <strong>Download editable plan</strong>. To reopen that file, choose <strong>Continue saved plan</strong>. The PDF is for reading or printing, not for continuing your work.</p>
       </div>
       <aside class="context-aside" aria-labelledby="resource-guide-heading">
         <p class="context-aside-label">Make the most of these resources</p>
@@ -1442,7 +1443,7 @@
           </div>
           <div class="resource-guide-item">
             <strong>This online action planner</strong>
-            <p><strong>To put ideas into action:</strong> Select steps that suit your business, track progress and download your plan.</p>
+            <p><strong>To put ideas into action:</strong> Select steps that suit your business, track progress and download a PDF report or an editable copy.</p>
           </div>
         </div>
       </aside>
@@ -1497,7 +1498,7 @@
     <footer class="site-footer">
       <div>
         <strong>Chambers Ireland Business Sustainability Action Planner</strong>
-        <p>The SDG icons alongside each action show which Goals it supports. Entries are saved in this browser; use Save progress to transfer an editable plan, or export a PDF for a readable copy.</p><p class="un-note">The content of this publication has not been approved by the United Nations and does not reflect the views of the United Nations or its officials or Member States. <a href="https://www.un.org/sustainabledevelopment/" target="_blank" rel="noopener">United Nations Sustainable Development Goals</a>.</p>
+        <p>The SDG icons alongside each action show which Goals it supports. Your work is saved in this browser. Use Download editable plan for a backup, Continue saved plan to reopen it on another device, or Download PDF (print/share) for a report.</p><p class="un-note">The content of this publication has not been approved by the United Nations and does not reflect the views of the United Nations or its officials or Member States. <a href="https://www.un.org/sustainabledevelopment/" target="_blank" rel="noopener">United Nations Sustainable Development Goals</a>.</p>
       </div>
       <div class="footer-links">
         <a href="https://chambers.ie/wp-content/uploads/2022/11/Chambers-Ireland-SDG-Toolkit-for-Business-2021-2.pdf" target="_blank" rel="noopener">View the source toolkit (PDF)</a>
@@ -1978,7 +1979,7 @@
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
-      link.download = 'business-sustainability-progress-' + safeName + '.json';
+      link.download = 'business-sustainability-editable-plan-' + safeName + '.json';
       link.style.display = 'none';
       document.body.appendChild(link);
       link.click();
@@ -1997,12 +1998,12 @@
       try {
         payload = JSON.parse(await file.text());
       } catch (error) {
-        alert('This file could not be read. Please choose a progress file saved from this planner.');
+        alert('This file could not be read. Please choose a file you downloaded using Download editable plan.');
         return;
       }
 
       if (!payload || payload.format !== PROGRESS_FILE_FORMAT || payload.version !== PROGRESS_FILE_VERSION) {
-        alert('This is not a compatible Chambers Ireland Sustainability Action Planner progress file.');
+        alert('This file cannot be opened as an editable plan. Choose a file downloaded using Download editable plan (not a PDF).');
         return;
       }
 
@@ -2014,9 +2015,9 @@
 
       if (hasSavedPlanContent()) {
         const confirmed = window.confirm(
-          'Load this saved progress file?\n\n' +
-          'This will replace the organisation name, selected actions, statuses and plan details currently saved in this browser. ' +
-          'Choose Cancel if you want to keep the plan currently on this device.'
+          'Continue with this saved plan?\n\n' +
+          'This will replace the plan currently saved in this browser. ' +
+          'Choose Cancel to keep your current work. To keep both plans, download an editable backup of your current plan first.'
         );
         if (!confirmed) return;
       }
@@ -2036,7 +2037,7 @@
       document.getElementById('statusFilter').value = '';
       saveState();
       renderAll();
-      alert('Progress loaded successfully. You can continue editing this plan on this device.');
+      alert('Your saved plan is ready. You can carry on where you left off.');
     }
 
     function exportActionPlan() {
