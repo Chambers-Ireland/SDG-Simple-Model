@@ -164,6 +164,17 @@
       background: #f7faff;
     }
     .btn-tutorial:hover { background: var(--primary-soft); }
+    .backup-panel { margin: 0 0 14px; padding: 17px 18px; border: 1px solid var(--border); border-left: 5px solid var(--chambers-gold); border-radius: 7px; background: var(--surface); }
+    .backup-panel h2 { color: var(--chambers-blue); font-size: 1rem; }
+    .backup-panel > p { font-size: .88rem; color: var(--muted); margin: 6px 0 13px; }
+    .backup-options { display: flex; gap: 12px; flex-wrap: wrap; }
+    .backup-option { flex: 1 1 220px; min-width: 0; }
+    .backup-option .btn { width: 100%; }
+    .backup-option p { margin: 5px 0 0; color: var(--muted); font-size: .83rem; }
+    .backup-feedback { margin-top: 13px; padding: 12px 14px; border: 1px solid var(--border); background: var(--surface-soft); border-radius: 5px; font-size: .88rem; }
+    .backup-feedback[hidden] { display: none; }
+    .backup-feedback strong { color: var(--chambers-blue); }
+    .backup-filename { display: block; overflow-wrap: anywhere; font-weight: 700; margin: 4px 0; }
 
     .tutorial-overlay {
       position: fixed;
@@ -1310,20 +1321,37 @@
       <div class="header-actions">
         <button class="btn btn-tutorial" type="button" id="openTutorialBtn">Quick tutorial</button>
         <a class="btn btn-toolkit" href="https://chambers.ie/wp-content/uploads/2022/11/Chambers-Ireland-SDG-Toolkit-for-Business-2021-2.pdf" target="_blank" rel="noopener">Read the full toolkit</a>
-        <button class="btn btn-primary" type="button" id="exportBtn" title="Download a PDF report to read, print or share; this is not an editable backup">Download PDF (print/share)</button>
-        <button class="btn btn-clear" type="button" id="saveProgressBtn" disabled title="Keep a backup or move your plan to another device">Download editable plan</button>
-        <button class="btn" type="button" id="uploadProgressBtn" title="Choose a previously downloaded editable plan to carry on">Continue saved plan</button>
-        <input type="file" id="progressFileInput" accept=".json,application/json" hidden>
+        <button class="btn btn-primary" type="button" id="exportBtn" title="Download a PDF report to read, print or share; this is not an editable backup">Download PDF report</button>
         <button class="btn btn-clear" type="button" id="clearSelectionsBtn" disabled>Clear plan</button>
       </div>
     </header>
 
+    <section class="backup-panel" aria-labelledby="backupHeading">
+      <h2 id="backupHeading">Your work saves automatically</h2>
+      <p>Return to this page on the same browser and device to continue. If you want a backup or need another computer, use these buttons:</p>
+      <div class="backup-options">
+        <div class="backup-option">
+          <button class="btn btn-clear" type="button" id="saveProgressBtn" disabled title="Download a file to keep or share your plan">Save a backup</button>
+          <p>Keep a copy or send it to a colleague.</p>
+        </div>
+        <div class="backup-option">
+          <button class="btn" type="button" id="uploadProgressBtn" title="Choose the backup file you downloaded from this planner">Open a backup</button>
+          <p>Choose your saved file to carry on.</p>
+        </div>
+      </div>
+      <input type="file" id="progressFileInput" accept=".json,application/json" hidden>
+      <div class="backup-feedback" id="backupFeedback" role="status" aria-live="polite" hidden>
+        <strong>Your backup download has started.</strong> Look for this file in your Downloads folder:
+        <span class="backup-filename" id="backupFileName"></span>
+        <strong>This is the correct file</strong> to use with <strong>Open a backup</strong>. Keep it safe. The PDF report is for printing, not continuing your work.
+      </div>
+    </section>
 
     <div class="tutorial-overlay" id="tutorialOverlay" hidden>
       <section class="tutorial-dialog" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle" aria-describedby="tutorialDescription">
         <div class="tutorial-header">
           <div>
-            <p class="tutorial-kicker">45-second guide</p>
+            <p class="tutorial-kicker">Quick guide</p>
             <h2 id="tutorialTitle" tabindex="-1">How to use the Sustainability Action Planner</h2>
             <p class="screen-reader-only" id="tutorialDescription">A five-step tutorial explaining how to choose actions, build your plan, and download or continue a saved plan without an account.</p>
           </div>
@@ -1372,26 +1400,28 @@
 
           <div class="tutorial-step" data-tutorial-step="3">
             <span class="tutorial-step-number">Step 4 of 5</span>
-            <h3>Leave now, continue your plan later</h3>
-            <p><strong>Coming back on this same device and browser?</strong> Your changes save automatically. Just open the planner again to carry on.</p>
+            <h3>Save your work and come back later</h3>
+            <p><strong>Same browser and device?</strong> Your work saves automatically. Just come back to this page.</p>
             <p><strong>Using another device or sharing with a colleague?</strong> Follow these two steps:</p>
             <div class="tutorial-flow">
-              <div class="tutorial-flow-item"><strong>1. Download editable plan</strong><span>Click this button to save a copy of your work. Keep the downloaded file somewhere safe, or send it to a colleague.</span></div>
-              <div class="tutorial-flow-item"><strong>2. Continue saved plan</strong><span>Open this planner, click <strong>Continue saved plan</strong> and choose the file you downloaded. Your actions, dates and notes will appear so you can keep working.</span></div>
+              <div class="tutorial-flow-item"><strong>1. Save a backup</strong><span>Downloads a file with your work. We'll show you its exact name so you know which file to keep.</span></div>
+              <div class="tutorial-flow-item"><strong>2. Open a backup</strong><span>Click this on the planner, then select that downloaded file. Your actions, dates and notes return so you can carry on.</span></div>
             </div>
-            <div class="tutorial-tip"><strong>Remember:</strong> You don't need to open or edit the downloaded file yourself. Keep it as a backup in case your browser data is cleared. If a plan is already open, we'll ask before replacing it.</div>
+            <div class="tutorial-tip"><strong>Keep that file safe.</strong> You do not need to open or edit it yourself. A PDF report cannot be used to reopen an editable plan. We ask before replacing an existing plan.</div>
           </div>
+
 
 
           <div class="tutorial-step" data-tutorial-step="4">
             <span class="tutorial-step-number">Step 5 of 5</span>
-            <h3>Want a copy to read, print or share?</h3>
-            <p>Choose <strong>Download PDF (print/share)</strong> for a readable report. A PDF cannot be uploaded to continue your work. To keep editing later or move devices, choose <strong>Download editable plan</strong> instead.</p>
+            <h3>The PDF report is separate from your backup</h3>
+            <p>Use <strong>Download PDF report</strong> for a readable copy to print or share. A PDF cannot be used to continue editing.</p>
             <div class="tutorial-flow">
-              <div class="tutorial-flow-item"><strong>Download PDF (print/share)</strong><span>Creates a report of your selected actions and details for reading or printing.</span></div>
-              <div class="tutorial-flow-item"><strong>Clear plan</strong><span>Removes the plan saved in this browser and lets you start again.</span></div>
+              <div class="tutorial-flow-item"><strong>Save a backup</strong><span>For reopening and continuing your work.</span></div>
+              <div class="tutorial-flow-item"><strong>Download PDF report</strong><span>For reading, printing or sharing.</span></div>
+              <div class="tutorial-flow-item"><strong>Clear plan</strong><span>Removes the plan saved in this browser.</span></div>
             </div>
-            <div class="tutorial-tip">No account is needed. Your action plan is not automatically sent to Chambers Ireland.</div>
+            <div class="tutorial-tip">No account needed. Your plan isn't automatically uploaded to a Chambers Ireland database.</div>
           </div>
         </div>
 
@@ -1426,7 +1456,7 @@
             <p><strong>My action plan:</strong> Your selected actions appear here automatically. Add an owner and target date, then optionally add simple progress and impact details before downloading your plan as a PDF.</p>
           </div>
         </div>
-        <p class="planner-intro-note"><strong>Come back later:</strong> Your work saves automatically on this device and browser. To keep a backup or switch devices, choose <strong>Download editable plan</strong>. To reopen that file, choose <strong>Continue saved plan</strong>. The PDF is for reading or printing, not for continuing your work.</p>
+        <p class="planner-intro-note"><strong>Come back later:</strong> Your work saves automatically on this device and browser. To keep a backup or switch devices, choose <strong>Save a backup</strong>. To reopen that file, choose <strong>Open a backup</strong>. The PDF is for reading or printing, not for continuing your work.</p>
       </div>
       <aside class="context-aside" aria-labelledby="resource-guide-heading">
         <p class="context-aside-label">Make the most of these resources</p>
@@ -1498,7 +1528,7 @@
     <footer class="site-footer">
       <div>
         <strong>Chambers Ireland Business Sustainability Action Planner</strong>
-        <p>The SDG icons alongside each action show which Goals it supports. Your work is saved in this browser. Use Download editable plan for a backup, Continue saved plan to reopen it on another device, or Download PDF (print/share) for a report.</p><p class="un-note">The content of this publication has not been approved by the United Nations and does not reflect the views of the United Nations or its officials or Member States. <a href="https://www.un.org/sustainabledevelopment/" target="_blank" rel="noopener">United Nations Sustainable Development Goals</a>.</p>
+        <p>The SDG icons alongside each action show which Goals it supports. Your work is saved in this browser. Use Save a backup for a backup, Open a backup to reopen it on another device, or Download PDF report for a report.</p><p class="un-note">The content of this publication has not been approved by the United Nations and does not reflect the views of the United Nations or its officials or Member States. <a href="https://www.un.org/sustainabledevelopment/" target="_blank" rel="noopener">United Nations Sustainable Development Goals</a>.</p>
       </div>
       <div class="footer-links">
         <a href="https://chambers.ie/wp-content/uploads/2022/11/Chambers-Ireland-SDG-Toolkit-for-Business-2021-2.pdf" target="_blank" rel="noopener">View the source toolkit (PDF)</a>
@@ -1917,6 +1947,7 @@
       // The privacy notice preference is separate and is not cleared.
       saveState();
       renderAll();
+      document.getElementById('backupFeedback').hidden = true;
     }
 
     function normaliseProgressPlan(plan) {
@@ -1979,12 +2010,16 @@
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
-      link.download = 'business-sustainability-editable-plan-' + safeName + '.json';
+      const fileName = 'business-sustainability-editable-plan-' + safeName + '.json';
+      link.download = fileName;
       link.style.display = 'none';
       document.body.appendChild(link);
       link.click();
       link.remove();
       setTimeout(() => URL.revokeObjectURL(url), 0);
+      // A browser may still need permission to finish the download.
+      document.getElementById('backupFileName').textContent = fileName;
+      document.getElementById('backupFeedback').hidden = false;
     }
 
     async function importProgressFile(file) {
@@ -1998,12 +2033,12 @@
       try {
         payload = JSON.parse(await file.text());
       } catch (error) {
-        alert('This file could not be read. Please choose a file you downloaded using Download editable plan.');
+        alert('This file could not be read. Please choose a file you downloaded using Save a backup.');
         return;
       }
 
       if (!payload || payload.format !== PROGRESS_FILE_FORMAT || payload.version !== PROGRESS_FILE_VERSION) {
-        alert('This file cannot be opened as an editable plan. Choose a file downloaded using Download editable plan (not a PDF).');
+        alert('This file cannot be opened as an editable plan. Choose a file downloaded using Save a backup (not a PDF).');
         return;
       }
 
@@ -2037,6 +2072,7 @@
       document.getElementById('statusFilter').value = '';
       saveState();
       renderAll();
+      document.getElementById('backupFeedback').hidden = true;
       alert('Your saved plan is ready. You can carry on where you left off.');
     }
 
