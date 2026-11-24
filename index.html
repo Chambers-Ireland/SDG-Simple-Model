@@ -880,16 +880,11 @@
       padding: 0;
       accent-color: var(--chambers-blue);
     }
-    .plan-field .completion-date-help {
+    .plan-field .ongoing-help {
       color: var(--muted);
       font-size: .76rem;
       line-height: 1.4;
       margin: 4px 0 0;
-    }
-    .plan-field input[type="date"]:disabled {
-      background: #f0f3f6;
-      color: var(--muted);
-      cursor: not-allowed;
     }
 
     .plan-why {
@@ -1411,7 +1406,7 @@
             <div class="tutorial-flow">
               <div class="tutorial-flow-item"><strong>1.</strong><span>Choose a status on an action card.</span></div>
               <div class="tutorial-flow-item"><strong>2.</strong><span>Open <strong>My action plan</strong>.</span></div>
-              <div class="tutorial-flow-item"><strong>3.</strong><span>Add an <strong>owner</strong> and a <strong>target completion date</strong>, or choose <strong>Ongoing commitment</strong> for actions with no end date.</span></div>
+              <div class="tutorial-flow-item"><strong>3.</strong><span>Add an <strong>owner</strong> if useful and tick <strong>Ongoing commitment</strong> for activities that continue over time.</span></div>
             </div>
             <div class="tutorial-tip">The small SDG icons are just guidance showing which Goals the action can support. You do not need to click them.</div>
           </div>
@@ -1437,7 +1432,7 @@
             <p><strong>Using another device or sharing with a colleague?</strong> Follow these two steps:</p>
             <div class="tutorial-flow">
               <div class="tutorial-flow-item"><strong>1. Save a backup</strong><span>Downloads a file with your work. We'll show you its exact name so you know which file to keep.</span></div>
-              <div class="tutorial-flow-item"><strong>2. Open a backup</strong><span>Click this on the planner, then select that downloaded file. Your actions, dates, ongoing commitments and notes return so you can carry on.</span></div>
+              <div class="tutorial-flow-item"><strong>2. Open a backup</strong><span>Click this on the planner, then select that downloaded file. Your actions, ongoing commitments and notes return so you can carry on.</span></div>
             </div>
             <div class="tutorial-tip"><strong>Keep that file safe.</strong> You do not need to open or edit it yourself. A PDF report cannot be used to reopen an editable plan. We ask before replacing an existing plan.</div>
           </div>
@@ -1485,7 +1480,7 @@
           </div>
           <div class="planner-intro-step">
             <span class="planner-intro-number" aria-hidden="true">2</span>
-            <p><strong>My action plan:</strong> Your selected actions appear here automatically. Add an owner and target completion date (or select Ongoing commitment), then optionally add simple progress and impact details before downloading your plan as a PDF.</p>
+            <p><strong>My action plan:</strong> Your selected actions appear here automatically. Add an owner if useful, mark ongoing commitments and optionally add simple progress and impact details before downloading your plan as a PDF.</p>
           </div>
         </div>
         <p class="planner-intro-note"><strong>Come back later:</strong> Your work saves automatically on this device and browser. To keep a backup or switch devices, choose <strong>Save a backup</strong>. To reopen that file, choose <strong>Open a backup</strong>. The PDF is for reading or printing, not for continuing your work.</p>
@@ -1831,7 +1826,7 @@
       plan.innerHTML = `
         <section class="panel plan-intro">
           <h2>My action plan</h2>
-          <p>Considering lets you keep ideas visible without committing. Add an owner and target completion date when you are ready, or select Ongoing commitment if the action has no end date. Leave the date blank if undecided. Use the optional progress and impact prompts if they are useful. Entries stay saved in this browser; download your PDF to keep a copy.</p>
+          <p>Considering lets you keep ideas visible without committing. Add an owner if useful and tick Ongoing commitment for activities that continue over time. Use the optional progress and impact prompts if they are useful. Entries stay saved in this browser; download your PDF to keep a copy.</p>
         </section>
         ${ACTIVE_STATUSES.map(status => {
           const actions = chosen.filter(action => state.statuses[action.id] === status);
@@ -1863,11 +1858,7 @@
 
       plan.querySelectorAll('.plan-ongoing').forEach(field => {
         field.addEventListener('change', () => {
-          const detail = state.details[field.dataset.id];
-          detail.ongoing = field.checked;
-          const dateField = document.getElementById('date-' + field.dataset.id);
-          dateField.disabled = detail.ongoing;
-          dateField.value = detail.ongoing ? '' : detail.targetDate;
+          state.details[field.dataset.id].ongoing = field.checked;
           saveState();
         });
       });
@@ -1915,13 +1906,11 @@
               <input class="plan-detail" id="owner-${escapeHtml(action.id)}" data-id="${escapeHtml(action.id)}" data-field="owner" type="text" autocomplete="off" value="${escapeHtml(detail.owner)}" placeholder="Person or team responsible">
             </div>
             <div class="plan-field">
-              <label for="date-${escapeHtml(action.id)}">Target completion date</label>
-              <input class="plan-detail" id="date-${escapeHtml(action.id)}" data-id="${escapeHtml(action.id)}" data-field="targetDate" type="date" autocomplete="off" aria-describedby="date-help-${escapeHtml(action.id)}" value="${escapeHtml(detail.ongoing ? '' : detail.targetDate)}" ${detail.ongoing ? 'disabled' : ''}>
               <label class="ongoing-option" for="ongoing-${escapeHtml(action.id)}">
-                <input class="plan-ongoing" id="ongoing-${escapeHtml(action.id)}" data-id="${escapeHtml(action.id)}" type="checkbox" aria-describedby="date-help-${escapeHtml(action.id)}" ${detail.ongoing ? 'checked' : ''}>
+                <input class="plan-ongoing" id="ongoing-${escapeHtml(action.id)}" data-id="${escapeHtml(action.id)}" type="checkbox" aria-describedby="ongoing-help-${escapeHtml(action.id)}" ${detail.ongoing ? 'checked' : ''}>
                 Ongoing commitment
               </label>
-              <p class="completion-date-help" id="date-help-${escapeHtml(action.id)}">When do you aim to complete this action? Select ongoing if there is no end date, or leave the date blank if undecided.</p>
+              <p class="ongoing-help" id="ongoing-help-${escapeHtml(action.id)}">Optional. Tick if this is a continuing activity rather than a one-off task.</p>
             </div>
 
             <details class="progress-details" ${hasProgressDetails ? 'open' : ''}>
@@ -2146,7 +2135,6 @@
               sdgs: action.sdgs,
               status: state.statuses[action.id],
               owner: detail.owner || '',
-              targetDate: detail.ongoing ? '' : (detail.targetDate || ''),
               ongoing: detail.ongoing === true,
               currentPosition: detail.currentPosition || '',
               desiredOutcome: detail.desiredOutcome || '',

@@ -141,7 +141,7 @@
         write('Category: ' + (action.category || 'Not specified'), {size: 9.3});
         write('SDGs this action can support: ' + (Array.isArray(action.sdgs) ? action.sdgs.map(n => 'SDG ' + n).join(', ') : 'Not specified'), {size: 9.3});
         write('Owner: ' + (action.owner || 'Not assigned'), {size: 9.3});
-        write('Target completion date: ' + (action.ongoing === true ? 'Ongoing commitment (no end date)' : (action.targetDate || 'Not set')), {size: 9.3});
+        if (action.ongoing === true) write('Commitment: Ongoing', {size: 9.3});
         if (action.currentPosition) write('Where are we now? ' + action.currentPosition, {size: 9.3});
         if (action.desiredOutcome) write('What are we trying to change or achieve? ' + action.desiredOutcome, {size: 9.3});
         if (action.progressMeasure) write("How will we know we're making progress? " + action.progressMeasure, {size: 9.3});
